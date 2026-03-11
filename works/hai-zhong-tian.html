@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>海中天 — 汐奎攝影</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Montserrat:wght@200;300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="work.css" />
+</head>
+<body>
+
+  <!-- BACK -->
+  <a href="../index.html#portfolio" class="back-btn">
+    <i class="fa-solid fa-arrow-left"></i>
+    <span>返回作品集</span>
+  </a>
+
+  <!-- HERO IMAGE -->
+  <section class="work-hero">
+    <div class="work-hero-img" style="background-image:url('../海中天作品01/1.png')"></div>
+    <div class="work-hero-overlay"></div>
+    <div class="work-hero-content">
+      <p class="work-series">廢墟攝影 · 系列 01</p>
+      <h1 class="work-title">海中天</h1>
+      <p class="work-subtitle">淡水海中天餐廳 · 新北市</p>
+    </div>
+    <div class="work-scroll-hint">
+      <span>SCROLL</span>
+      <div class="work-scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section class="work-story">
+    <div class="work-story-inner">
+      <div class="work-story-label">
+        <span>THE STORY</span>
+      </div>
+      <div class="work-story-text">
+        <h2 class="story-title">不是遺棄，是租約到期</h2>
+        <p>淡水河口邊，有一棟建築曾以「海中天」為名。那是一間餐廳，坐擁觀音山與淡水河的景致，全盛時期這裡人聲鼎沸，婚宴、家庭聚餐、情侶約會——所有人都來這裡，對著窗外的水面許願。</p>
+        <p>它的結束沒有戲劇性。不是一場大火，不是一夕倒閉，而是一紙再平常不過的公文——土地租約到期，地主收回，一切就這樣停在某一個普通的日子裡。餐廳的人拿走了能帶走的，剩下的，就留給時間處理。</p>
+        <p>我踏入這裡的那天，陽光從破損的窗縫斜斜射進，打在積了塵的地板上。椅子還整齊地排著，桌布已經泛黃，牆上的裝飾畫還掛在原位。沒有人刻意破壞什麼——這裡只是被合法地、安靜地放棄了。</p>
+        <p>某種程度上，這比廢棄更令人難受。不是無人問津，而是有人清清楚楚地知道，時間到了，就走。</p>
+        <p class="story-closing">有些地方的消失，不需要理由，只需要一個期限。而那個期限，往往比任何災難都更殘忍。</p>
+      </div>
+      <div class="work-meta">
+        <div class="meta-item">
+          <span class="meta-label">地點</span>
+          <span class="meta-val">新北市淡水區</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">類型</span>
+          <span class="meta-val">廢棄餐廳 · 廢墟探索</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">攝影師</span>
+          <span class="meta-val">汐奎</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="work-gallery">
+    <div class="gallery-grid">
+      <div class="gallery-item full">
+        <img src="../海中天作品01/1.png" alt="海中天 01" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="../海中天作品01/2.png" alt="海中天 02" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="../海中天作品01/3.png" alt="海中天 03" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="../海中天作品01/4.png" alt="海中天 04" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="../海中天作品01/5.png" alt="海中天 05" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lb-close" id="lbClose"><i class="fa-solid fa-xmark"></i></button>
+    <button class="lb-prev" id="lbPrev"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="lb-next" id="lbNext"><i class="fa-solid fa-chevron-right"></i></button>
+    <div class="lb-img-wrap">
+      <img src="" alt="" id="lbImg" />
+    </div>
+    <div class="lb-counter" id="lbCounter">1 / 5</div>
+  </div>
+
+  <!-- FOOTER MINI -->
+  <footer class="work-footer">
+    <a href="../index.html#portfolio" class="back-btn-footer">
+      <i class="fa-solid fa-arrow-left"></i> 返回作品集
+    </a>
+    <p class="work-footer-copy">&copy; 2026 汐奎攝影 XIKUI PHOTOGRAPHY</p>
+  </footer>
+
+  <script src="work.js"></script>
+</body>
+</html>

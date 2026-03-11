@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>汐奎攝影 | XIKUI PHOTOGRAPHY</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@200;300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- INTRO LOADER -->
+  <div class="intro-loader" id="introLoader">
+    <div class="intro-logo">
+      <img src="logo/logo.png" alt="汐奎攝影" class="intro-logo-img" />
+      <p class="intro-brand">XIKUI PHOTOGRAPHY</p>
+    </div>
+    <div class="intro-progress-wrap">
+      <div class="intro-bar-track">
+        <div class="intro-bar-fill" id="introBar"></div>
+      </div>
+      <span class="intro-counter" id="introCounter">000</span>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#home" class="nav-logo">
+        <img src="logo/logo.png" alt="汐奎攝影" class="logo-img" />
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" class="nav-link">首頁</a></li>
+        <li><a href="#about" class="nav-link">關於</a></li>
+        <li><a href="#portfolio" class="nav-link">作品集</a></li>
+        <li><a href="#services" class="nav-link">攝影類型</a></li>
+        <li><a href="#contact" class="nav-link">聯絡</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="選單">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-subtitle fade-in-up delay-1">XIKUI PHOTOGRAPHY</p>
+      <h1 class="hero-title fade-in-up delay-2">
+        <span>記錄</span><br /><em>廢墟之中</em><br /><span>時間的重量</span>
+      </h1>
+      <div class="hero-divider fade-in-up delay-3"></div>
+      <p class="hero-desc fade-in-up delay-4">那些被遺忘的地方，從未停止訴說</p>
+      <a href="#portfolio" class="btn-primary fade-in-up delay-5">探索作品</a>
+    </div>
+    <div class="hero-scroll">
+      <span>SCROLL</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image-wrap reveal">
+          <div class="about-img-placeholder">
+            <img src="logo/logo.png" alt="汐奎攝影" class="about-logo-display" />
+          </div>
+          <div class="about-img-accent"></div>
+        </div>
+        <div class="about-content reveal delay-2">
+          <p class="section-label">ABOUT</p>
+          <h2 class="section-title">關於<br /><em>汐奎攝影</em></h2>
+          <div class="section-divider"></div>
+          <p class="about-text">2018 年，我開始走入廢墟。那時手上沒有相機，只有一雙腳和說不清的好奇。直到 2022 年才拿起鏡頭，學著用攝影語言，說出那些空間想說卻說不出口的話。</p>
+          <p class="about-text">廢墟從不只是破敗，它是歷史最誠實的容顏。每一張照片，都是一段即將消失的記憶的最後見證。</p>
+          <div class="about-stats">
+            <div class="stat-item">
+              <span class="stat-num">10<em>+</em></span>
+              <span class="stat-label">廢墟探索</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num">4<em>年</em></span>
+              <span class="stat-label">攝影年資</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num">10<em>+</em></span>
+              <span class="stat-label">展出作品</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section class="portfolio" id="portfolio">
+    <div class="container">
+      <div class="section-header reveal">
+        <p class="section-label">PORTFOLIO</p>
+        <h2 class="section-title">作品<em>集</em></h2>
+        <div class="section-divider center"></div>
+        <p class="section-desc">每一幀，都是即將消失之物的最後呼吸</p>
+      </div>
+      <div class="portfolio-filter reveal">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="ruin">廢墟</button>
+        <button class="filter-btn" data-filter="architecture">建築</button>
+        <button class="filter-btn" data-filter="interior">室內</button>
+        <button class="filter-btn" data-filter="detail">細節</button>
+      </div>
+      <div class="portfolio-grid reveal">
+        <div class="portfolio-item large" data-category="ruin">
+          <a href="works/hai-zhong-tian.html" class="portfolio-link">
+            <div class="portfolio-img" style="background-image:url('海中天作品01/1.png');background-size:cover;background-position:center;filter:grayscale(100%) brightness(0.7);">
+              <div class="portfolio-number">01</div>
+            </div>
+            <div class="portfolio-overlay">
+              <p class="portfolio-cat">廢墟攝影</p>
+              <h3 class="portfolio-name">海中天</h3>
+              <div class="portfolio-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+            </div>
+          </a>
+        </div>
+        <div class="portfolio-item" data-category="ruin">
+          <a href="works/di-zhong-hai.html" class="portfolio-link">
+            <div class="portfolio-img" style="background-image:url('地中海作品02/01.png');background-size:cover;background-position:center;filter:grayscale(100%) brightness(0.7);">
+              <div class="portfolio-number">02</div>
+            </div>
+            <div class="portfolio-overlay">
+              <p class="portfolio-cat">廢墟攝影</p>
+              <h3 class="portfolio-name">地中海俱樂部</h3>
+              <div class="portfolio-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+            </div>
+          </a>
+        </div>
+        <div class="portfolio-item" data-category="interior">
+          <div class="portfolio-img p-bg-3"><div class="portfolio-number">03</div></div>
+          <div class="portfolio-overlay">
+            <p class="portfolio-cat">廢棄室內</p>
+            <h3 class="portfolio-name">塵封的時間</h3>
+            <div class="portfolio-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+          </div>
+        </div>
+        <div class="portfolio-item" data-category="detail">
+          <div class="portfolio-img p-bg-4"><div class="portfolio-number">04</div></div>
+          <div class="portfolio-overlay">
+            <p class="portfolio-cat">細節紋理</p>
+            <h3 class="portfolio-name">剝落之美</h3>
+            <div class="portfolio-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+          </div>
+        </div>
+        <div class="portfolio-item large" data-category="ruin">
+          <div class="portfolio-img p-bg-5"><div class="portfolio-number">05</div></div>
+          <div class="portfolio-overlay">
+            <p class="portfolio-cat">廢墟攝影</p>
+            <h3 class="portfolio-name">廢城殘影</h3>
+            <div class="portfolio-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+          </div>
+        </div>
+        <div class="portfolio-item" data-category="architecture">
+          <div class="portfolio-img p-bg-6"><div class="portfolio-number">06</div></div>
+          <div class="portfolio-overlay">
+            <p class="portfolio-cat">建築攝影</p>
+            <h3 class="portfolio-name">無聲的巨構</h3>
+            <div class="portfolio-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="portfolio-cta reveal">
+        <a href="#contact" class="btn-secondary">聯絡我 <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="quote-banner">
+    <div class="quote-inner">
+      <i class="fa-solid fa-quote-left quote-icon"></i>
+      <p class="quote-text">「廢墟不是終結，是時間誠實的告白——它比任何活著的建築，都更能說出曾經有人在這裡存在過。」</p>
+      <span class="quote-author">— 汐奎攝影</span>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-header reveal">
+        <p class="section-label">PHOTOGRAPHY TYPE</p>
+        <h2 class="section-title">攝影<em>類型</em></h2>
+        <div class="section-divider center"></div>
+        <p class="section-desc">深入廢墟與建築的靜默，為逝去的空間留下見證</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal delay-1">
+          <div class="service-icon"><i class="fa-solid fa-building-circle-xmark"></i></div>
+          <h3 class="service-title">廢墟探索攝影</h3>
+          <div class="service-line"></div>
+          <p class="service-desc">深入被遺忘的空間，以鏡頭紀錄時間侵蝕後留下的痕跡，讓每一道裂縫都成為歷史的低語。</p>
+          <ul class="service-features">
+            <li><i class="fa-solid fa-check"></i> 廢棄廠房 · 醫院 · 學校</li>
+            <li><i class="fa-solid fa-check"></i> 精修黑白藝術影像</li>
+            <li><i class="fa-solid fa-check"></i> 限量藝術輸出印刷</li>
+          </ul>
+        </div>
+        <div class="service-card reveal delay-2">
+          <div class="service-icon"><i class="fa-solid fa-landmark"></i></div>
+          <h3 class="service-title">建築攝影</h3>
+          <div class="service-line"></div>
+          <p class="service-desc">捕捉建築的幾何美學與光影變化，從宏觀結構到微小細節，呈現空間無聲的力量與詩意。</p>
+          <ul class="service-features">
+            <li><i class="fa-solid fa-check"></i> 歷史建築紀錄</li>
+            <li><i class="fa-solid fa-check"></i> 幾何構圖創作</li>
+            <li><i class="fa-solid fa-check"></i> 光影藝術影像</li>
+          </ul>
+        </div>
+        <div class="service-card reveal delay-3">
+          <div class="service-icon"><i class="fa-solid fa-door-open"></i></div>
+          <h3 class="service-title">廢棄室內紀錄</h3>
+          <div class="service-line"></div>
+          <p class="service-desc">走進廢棄空間的內部，那些散落的椅子、褪色的牆紙、透光的破窗——每一幀都是一則未完的故事。</p>
+          <ul class="service-features">
+            <li><i class="fa-solid fa-check"></i> 廢棄宅邸 · 旅館 · 工廠</li>
+            <li><i class="fa-solid fa-check"></i> 氛圍光影捕捉</li>
+            <li><i class="fa-solid fa-check"></i> 空間故事紀實</li>
+          </ul>
+        </div>
+        <div class="service-card reveal delay-4">
+          <div class="service-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+          <h3 class="service-title">紋理細節攝影</h3>
+          <div class="service-line"></div>
+          <p class="service-desc">鏽蝕的鐵窗、剝落的油漆、龜裂的地板——這些被忽視的細節，在鏡頭下成為最具張力的抽象藝術。</p>
+          <ul class="service-features">
+            <li><i class="fa-solid fa-check"></i> 微距材質攝影</li>
+            <li><i class="fa-solid fa-check"></i> 抽象藝術創作</li>
+            <li><i class="fa-solid fa-check"></i> 高解析度輸出</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="section-header reveal">
+        <p class="section-label">CONTACT</p>
+        <h2 class="section-title">聯絡<em>我</em></h2>
+        <div class="section-divider center"></div>
+        <p class="section-desc">有任何合作、購買或探索計畫，歡迎與我聯繫</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info reveal delay-1">
+          <div class="contact-info-item">
+            <div class="contact-info-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="contact-info-text">
+              <h4>活動範圍</h4>
+              <p>台灣全境 · 歡迎洽詢遠行計畫</p>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon"><i class="fa-solid fa-envelope"></i></div>
+            <div class="contact-info-text">
+              <h4>電子信箱</h4>
+              <p>info@xikui.club</p>
+            </div>
+          </div>
+          <div class="contact-social">
+            <a href="#" class="social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="social-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="social-btn" aria-label="LINE"><i class="fa-brands fa-line"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="logo/logo.png" alt="汐奎攝影" class="footer-logo-img" />
+      </div>
+      <p class="footer-tagline">廢墟之中，仍有光存在過的痕跡</p>
+      <div class="footer-divider"></div>
+      <div class="footer-links">
+        <a href="#home">首頁</a>
+        <a href="#about">關於</a>
+        <a href="#portfolio">作品集</a>
+        <a href="#services">攝影類型</a>
+        <a href="#contact">聯絡</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 汐奎攝影 XIKUI PHOTOGRAPHY. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/gallery.js"></script>
+</body>
+</html>
