@@ -1,115 +1,82 @@
-/* 汐奎攝影 XIKUI PHOTOGRAPHY — Gallery Filter JS */
+/* 汐奎攝影 XIKUI PHOTOGRAPHY — Gallery Filter + Page Transition JS */
 
 document.addEventListener('DOMContentLoaded', function () {
 
-  const filterBtns = document.querySelectorAll('.filter-btn');
+  /* ── Portfolio filter ── */
+  const filterBtns    = document.querySelectorAll('.filter-btn');
   const portfolioItems = document.querySelectorAll('.portfolio-item');
 
-  if (!filterBtns.length) return;
+  if (filterBtns.length) {
+    filterBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        filterBtns.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
 
-  filterBtns.forEach(function (btn) {
-    btn.addEventListener('click', function () {
+        var filter = btn.getAttribute('data-filter');
 
-      /* Update active button */
-      filterBtns.forEach(function (b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-
-      const filter = btn.getAttribute('data-filter');
-
-      portfolioItems.forEach(function (item) {
-        const category = item.getAttribute('data-category');
-
-        if (filter === 'all' || category === filter) {
-          item.classList.remove('hidden');
-          /* Re-trigger entrance animation */
-          item.style.opacity = '0';
-          item.style.transform = 'scale(0.96)';
-          item.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-          requestAnimationFrame(function () {
+        portfolioItems.forEach(function (item) {
+          var category = item.getAttribute('data-category');
+          if (filter === 'all' || category === filter) {
+            item.classList.remove('hidden');
+            item.style.opacity = '0';
+            item.style.transform = 'scale(0.96)';
+            item.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
             requestAnimationFrame(function () {
-              item.style.opacity = '1';
-              item.style.transform = 'scale(1)';
+              requestAnimationFrame(function () {
+                item.style.opacity = '1';
+                item.style.transform = 'scale(1)';
+              });
             });
-          });
-        } else {
-          item.style.opacity = '0';
-          item.style.transform = 'scale(0.96)';
-          item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-          setTimeout(function () {
-            item.classList.add('hidden');
-          }, 300);
-        }
+          } else {
+            item.style.opacity = '0';
+            item.style.transform = 'scale(0.96)';
+            item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            setTimeout(function () { item.classList.add('hidden'); }, 300);
+          }
+        });
       });
-
-      /* Fix grid layout for large items after filter */
-      setTimeout(fixGridLayout, 350);
-    });
-  });
-
-  /* Ensure large class is handled properly after filtering */
-  function fixGridLayout() {
-    const grid = document.querySelector('.portfolio-grid');
-    if (!grid) return;
-
-    const visibleItems = Array.from(portfolioItems).filter(function (item) {
-      return !item.classList.contains('hidden');
-    });
-
-    /* If only one visible item remains, remove large class temporarily */
-    visibleItems.forEach(function (item, idx) {
-      if (visibleItems.length === 1) {
-        item.style.gridColumn = 'span 3';
-      } else {
-        item.style.gridColumn = '';
-      }
     });
   }
 
-  /* Portfolio item click — open lightbox stub */
-  portfolioItems.forEach(function (item) {
-    item.addEventListener('click', function () {
-      const name = item.querySelector('.portfolio-name');
-      const cat  = item.querySelector('.portfolio-cat');
-      if (name && cat) {
-        openLightbox(cat.textContent, name.textContent);
-      }
+  /* ── Page transition overlay ── */
+  // Create overlay element
+  var overlay = document.createElement('div');
+  overlay.id = 'pageTransitionOverlay';
+  overlay.style.cssText = [
+    'position:fixed', 'inset:0', 'background:#000',
+    'z-index:99999', 'pointer-events:none',
+    'opacity:0', 'transition:opacity 0.5s cubic-bezier(0.76,0,0.24,1)'
+  ].join(';');
+  document.body.appendChild(overlay);
+
+  // Intercept portfolio link clicks
+  document.querySelectorAll('.portfolio-link').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var href = link.getAttribute('href');
+      if (!href || href === '#') return;
+      e.preventDefault();
+
+      // Fade to black
+      overlay.style.pointerEvents = 'all';
+      overlay.style.opacity = '1';
+
+      setTimeout(function () {
+        window.location.href = href;
+      }, 520);
     });
   });
 
-  /* Simple lightbox */
-  function openLightbox(category, title) {
-    const existing = document.getElementById('lightbox');
-    if (existing) existing.remove();
-
-    const lb = document.createElement('div');
-    lb.id = 'lightbox';
-    lb.style.cssText = [
-      'position:fixed', 'inset:0', 'background:rgba(0,0,0,.95)',
-      'z-index:9998', 'display:flex', 'align-items:center',
-      'justify-content:center', 'flex-direction:column',
-      'gap:20px', 'cursor:pointer',
-      'animation:fadeInUp 0.4s ease forwards'
-    ].join(';');
-
-    lb.innerHTML = [
-      '<div style="text-align:center;padding:40px">',
-        '<p style="font-family:Montserrat,sans-serif;font-size:.6rem;letter-spacing:.4em;color:#888;text-transform:uppercase;margin-bottom:16px">' + category + '</p>',
-        '<h2 style="font-family:Playfair Display,Georgia,serif;font-size:2.5rem;font-weight:400;color:#fff;margin-bottom:24px">' + title + '</h2>',
-        '<div style="width:40px;height:1px;background:#555;margin:0 auto 24px"></div>',
-        '<p style="font-family:Cormorant Garamond,Georgia,serif;font-size:1rem;color:#888;letter-spacing:.1em">點擊任意處關閉</p>',
-        '<div style="margin-top:32px;width:80px;height:80px;border:1px solid #333;display:flex;align-items:center;justify-content:center;margin:32px auto 0">',
-          '<i class="fa-solid fa-camera" style="font-size:1.5rem;color:#555"></i>',
-        '</div>',
-      '</div>'
-    ].join('');
-
-    lb.addEventListener('click', function () {
-      lb.style.opacity = '0';
-      lb.style.transition = 'opacity 0.3s ease';
-      setTimeout(function () { lb.remove(); }, 300);
+  // On page load: fade in from black (for work detail pages coming back)
+  overlay.style.opacity = '1';
+  overlay.style.transition = 'none';
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      overlay.style.transition = 'opacity 0.6s cubic-bezier(0.76,0,0.24,1)';
+      overlay.style.opacity = '0';
+      setTimeout(function () {
+        overlay.style.pointerEvents = 'none';
+      }, 650);
     });
-
-    document.body.appendChild(lb);
-  }
+  });
 
 });
