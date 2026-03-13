@@ -162,19 +162,29 @@ document.addEventListener('DOMContentLoaded', function () {
       setTimeout(showNext, 80);
     }
 
-    /* ── OUTRO: Smooth fade (no harsh cut) ── */
+    /* ── OUTRO: Fade black → reveal site with entrance animation ── */
     function startOutro() {
       if (outro) {
-        outro.style.transition = 'opacity 0.6s cubic-bezier(0.4,0,0.2,1)';
+        // 1. Fade to black
+        outro.style.transition = 'opacity 0.5s cubic-bezier(0.4,0,0.2,1)';
         outro.style.pointerEvents = 'all';
         outro.classList.add('fade-in');
+
         setTimeout(function () {
+          // 2. Hide loader, show site (still behind black outro)
           introLoader.classList.add('hidden');
           document.body.style.overflow = '';
-        }, 620);
+          document.body.classList.add('site-enter');
+
+          // 3. Fade out the black outro revealing site
+          outro.style.transition = 'opacity 0.9s cubic-bezier(0.4,0,0.2,1)';
+          outro.classList.remove('fade-in');
+
+        }, 520);
       } else {
         introLoader.classList.add('hidden');
         document.body.style.overflow = '';
+        document.body.classList.add('site-enter');
       }
     }
   }

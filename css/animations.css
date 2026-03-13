@@ -183,14 +183,57 @@
 
 /* ── Outro overlay ── */
 .intro-outro {
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: #000;
-  z-index: 10;
+  z-index: 9998;
   opacity: 0;
   pointer-events: none;
 }
-.intro-outro.fade-in { opacity: 1; }
+.intro-outro.fade-in { opacity: 1; pointer-events: all; }
+
+/* =============================================
+   SITE ENTER — Homepage reveal animation
+   Triggered by body.site-enter after intro
+   ============================================= */
+
+/* Hero content enters from below */
+body:not(.site-enter) .hero-content,
+body:not(.site-enter) .hero-scroll,
+body:not(.site-enter) .navbar {
+  opacity: 0;
+}
+
+body.site-enter .hero-subtitle {
+  animation: siteEnterUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.1s both;
+}
+body.site-enter .hero-title {
+  animation: siteEnterUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s both;
+}
+body.site-enter .hero-divider {
+  animation: siteEnterFade 0.7s ease 0.5s both;
+}
+body.site-enter .hero-desc {
+  animation: siteEnterUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.55s both;
+}
+body.site-enter .btn-primary {
+  animation: siteEnterUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.7s both;
+}
+body.site-enter .hero-scroll {
+  animation: siteEnterFade 1s ease 1s both;
+}
+body.site-enter .navbar {
+  animation: siteEnterFade 0.6s ease 0.1s both;
+}
+
+@keyframes siteEnterUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes siteEnterFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
 
 /* Form (continued) */
 .form-label{position:absolute;top:16px;left:0;font-family:var(--font-sans);font-size:.75rem;color:var(--gray);letter-spacing:.1em;transition:all 0.3s ease;pointer-events:none}
