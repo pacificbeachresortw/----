@@ -86,27 +86,36 @@ document.addEventListener('DOMContentLoaded', function () {
       }, phase2Duration);
     }
 
-    /* ── PHASE 3: Rapid photo flash ── */
+    /* ── PHASE 3: Rapid fullscreen photo flash ── */
     function startPhase3() {
       showPhase(phase3);
-      var delay = 0;
-      photos.forEach(function (photo, i) {
-        setTimeout(function () {
-          // Flash each photo individually
-          photos.forEach(function (p) { p.classList.remove('visible'); });
-          photo.classList.add('visible');
-        }, delay);
-        delay += 500;
-      });
-      // Show all together
-      setTimeout(function () {
-        photos.forEach(function (p) { p.classList.add('visible'); });
-      }, delay);
 
-      var phase3Duration = delay + 600;
-      setTimeout(function () {
-        startOutro();
-      }, phase3Duration);
+      // Add photo counter element
+      var photoNumEl = document.createElement('div');
+      photoNumEl.className = 'intro-photo-num';
+      var photoContainer = document.getElementById('introPhotos');
+      if (photoContainer) photoContainer.appendChild(photoNumEl);
+
+      var flashInterval = 220; // fast flash per photo
+      var idx = 0;
+
+      function flashNext() {
+        // Hide all
+        photos.forEach(function (p) { p.classList.remove('visible'); });
+        if (idx < photos.length) {
+          photos[idx].classList.add('visible');
+          if (photoNumEl) {
+            photoNumEl.textContent = String(idx + 1).padStart(2,'0') + ' / ' + String(photos.length).padStart(2,'0');
+          }
+          idx++;
+          setTimeout(flashNext, flashInterval);
+        } else {
+          // All shown — pause then outro
+          setTimeout(startOutro, 400);
+        }
+      }
+
+      setTimeout(flashNext, 100);
     }
 
     /* ── OUTRO: Black slam + site reveal ── */
