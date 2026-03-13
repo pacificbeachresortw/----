@@ -3,12 +3,11 @@
 document.addEventListener('DOMContentLoaded', function () {
 
   /* =============================================
-     INTRO LOADER — Multi-Phase Animation
-     Total ~10s:
-     Phase1: Logo + counter (0→100) ~4s
-     Phase2: Tagline scroll + chars pop ~3s
-     Phase3: Photo flash ~2s
-     Outro:  Fade black → reveal site ~1s
+     INTRO LOADER — High-Impact Multi-Phase Animation
+     Phase1: Logo flash in + counter sprint (0→100) ~2.5s
+     Phase2: Tagline wipe + chars slam in ~2.5s
+     Phase3: Photo rapid flash ~2s
+     Outro:  Black slam → site reveal ~1s
      ============================================= */
   var introLoader = document.getElementById('introLoader');
 
@@ -27,17 +26,16 @@ document.addEventListener('DOMContentLoaded', function () {
     function showPhase(el) { if (el) el.classList.add('active'); }
     function hidePhase(el) { if (el) el.classList.remove('active'); }
 
-    /* ── PHASE 1: Logo + Counter ── */
+    /* ── PHASE 1: Logo + Fast Counter ── */
     showPhase(phase1);
 
     var count = 0;
-    var counterDuration = 3000;
+    var counterDuration = 1600; // faster sprint
     var counterStep = counterDuration / 100;
 
-    // Start counter after logo appears
     setTimeout(function () {
       if (fill) {
-        fill.style.transition = 'width ' + counterDuration + 'ms linear';
+        fill.style.transition = 'width ' + counterDuration + 'ms cubic-bezier(0.4,0,0.2,1)';
         fill.style.width = '100%';
       }
       var timer = setInterval(function () {
@@ -45,61 +43,82 @@ document.addEventListener('DOMContentLoaded', function () {
         if (numEl) numEl.textContent = count;
         if (count >= 100) {
           clearInterval(timer);
-          setTimeout(function () {
-            hidePhase(phase1);
-            setTimeout(startPhase2, 500);
-          }, 600);
+          // Flash white on completion
+          if (phase1) {
+            phase1.style.background = '#fff';
+            phase1.style.transition = 'background 0.05s';
+            setTimeout(function () {
+              phase1.style.background = '';
+              phase1.style.transition = '';
+              hidePhase(phase1);
+              setTimeout(startPhase2, 300);
+            }, 80);
+          } else {
+            setTimeout(startPhase2, 400);
+          }
         }
       }, counterStep);
-    }, 700);
+    }, 400);
 
-    /* ── PHASE 2: Tagline + Brand Chars ── */
+    /* ── PHASE 2: Tagline wipe + chars slam ── */
     function startPhase2() {
       showPhase(phase2);
-      // Stagger each character pop
+      // Chars slam in with stagger
       chars.forEach(function (ch, i) {
         setTimeout(function () {
           ch.style.opacity = '1';
           ch.style.transform = 'translateY(0) scale(1)';
-          ch.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.34,1.56,0.64,1)';
-        }, 900 + i * 220);
+          ch.style.transition = 'opacity 0.3s ease, transform 0.4s cubic-bezier(0.22,1,0.36,1)';
+        }, 800 + i * 160);
       });
-      // After all chars visible, go to phase 3
-      var phase2Duration = 900 + chars.length * 220 + 1000;
+      var phase2Duration = 800 + chars.length * 160 + 700;
       setTimeout(function () {
-        hidePhase(phase2);
-        setTimeout(startPhase3, 400);
+        // Slam out
+        chars.forEach(function (ch) {
+          ch.style.transition = 'opacity 0.2s ease, transform 0.3s ease';
+          ch.style.opacity = '0';
+          ch.style.transform = 'translateY(-20px) scale(1.1)';
+        });
+        setTimeout(function () {
+          hidePhase(phase2);
+          setTimeout(startPhase3, 200);
+        }, 300);
       }, phase2Duration);
     }
 
-    /* ── PHASE 3: Photo Flashes ── */
+    /* ── PHASE 3: Rapid photo flash ── */
     function startPhase3() {
       showPhase(phase3);
+      var delay = 0;
       photos.forEach(function (photo, i) {
         setTimeout(function () {
+          // Flash each photo individually
+          photos.forEach(function (p) { p.classList.remove('visible'); });
           photo.classList.add('visible');
-        }, i * 400);
+        }, delay);
+        delay += 500;
       });
-      // After all photos shown, fade to outro
-      var phase3Duration = photos.length * 400 + 700;
+      // Show all together
       setTimeout(function () {
-        hidePhase(phase3);
+        photos.forEach(function (p) { p.classList.add('visible'); });
+      }, delay);
+
+      var phase3Duration = delay + 600;
+      setTimeout(function () {
         startOutro();
       }, phase3Duration);
     }
 
-    /* ── OUTRO: Fade black then reveal site ── */
+    /* ── OUTRO: Black slam + site reveal ── */
     function startOutro() {
       if (outro) {
         outro.style.pointerEvents = 'all';
+        outro.style.transition = 'opacity 0.3s ease';
         outro.classList.add('fade-in');
         setTimeout(function () {
           introLoader.classList.add('hidden');
           document.body.style.overflow = '';
-          // slight delay then fade out outro overlay revealing page
-          outro.classList.remove('fade-in');
-          outro.classList.add('fade-out');
-        }, 900);
+        }, 350);
       } else {
         introLoader.classList.add('hidden');
         document.body.style.overflow = '';
@@ -111,25 +130,19 @@ document.addEventListener('DOMContentLoaded', function () {
   var navbar = document.getElementById('navbar');
   if (navbar) {
     window.addEventListener('scroll', function () {
-      if (window.scrollY > 60) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
     });
   }
 
   /* ── Mobile nav toggle ── */
   var navToggle = document.getElementById('navToggle');
   var navLinks  = document.getElementById('navLinks');
-
   if (navToggle && navLinks) {
     navToggle.addEventListener('click', function () {
       navToggle.classList.toggle('open');
       navLinks.classList.toggle('open');
       document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
     });
-
     document.querySelectorAll('.nav-link').forEach(function (link) {
       link.addEventListener('click', function () {
         navToggle.classList.remove('open');
@@ -143,32 +156,27 @@ document.addEventListener('DOMContentLoaded', function () {
   var sections = document.querySelectorAll('section[id]');
   window.addEventListener('scroll', function () {
     var current = '';
-    sections.forEach(function (section) {
-      if (window.scrollY >= section.offsetTop - 120) {
-        current = section.getAttribute('id');
-      }
+    sections.forEach(function (s) {
+      if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id');
     });
     document.querySelectorAll('.nav-link').forEach(function (link) {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === '#' + current) {
-        link.classList.add('active');
-      }
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
     });
   });
 
   /* ── Reveal on scroll ── */
   var revealEls = document.querySelectorAll('.reveal');
-  var revealObserver = new IntersectionObserver(function (entries) {
+  var revealObs = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
-        revealObserver.unobserve(entry.target);
+        revealObs.unobserve(entry.target);
       }
     });
   }, { threshold: 0.12 });
-  revealEls.forEach(function (el) { revealObserver.observe(el); });
+  revealEls.forEach(function (el) { revealObs.observe(el); });
 
-  /* ── Contact form submit ── */
+  /* ── Contact form ── */
   var form = document.getElementById('contactForm');
   if (form) {
     form.addEventListener('submit', function (e) {
@@ -178,7 +186,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  /* ── Toast helper ── */
   function showToast(msg) {
     var toast = document.querySelector('.toast');
     if (!toast) {
