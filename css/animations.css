@@ -104,17 +104,70 @@
 }
 
 /* ── PHASE 2: Tagline + Brand Chars ── */
+
+/* Scan beam that sweeps across during phase 2 */
+.intro-phase#introPhase2::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -30%;
+  width: 25%;
+  height: 100%;
+  background: linear-gradient(to right,
+    transparent 0%,
+    rgba(255,255,255,0.03) 40%,
+    rgba(255,255,255,0.07) 50%,
+    rgba(255,255,255,0.03) 60%,
+    transparent 100%
+  );
+  transform: skewX(-12deg);
+  animation: scanBeam 1.4s cubic-bezier(0.4,0,0.2,1) 0.2s both;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes scanBeam {
+  from { left: -30%; }
+  to   { left: 115%; }
+}
+
+/* Horizontal line that streaks through */
+.intro-phase#introPhase2::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -10%;
+  width: 120%;
+  height: 1px;
+  background: linear-gradient(to right,
+    transparent,
+    rgba(255,255,255,0.06) 30%,
+    rgba(255,255,255,0.15) 50%,
+    rgba(255,255,255,0.06) 70%,
+    transparent
+  );
+  animation: streakLine 1.2s ease 0.1s both;
+  pointer-events: none;
+}
+@keyframes streakLine {
+  from { opacity: 0; transform: translateX(-20px); }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  to   { opacity: 0; transform: translateX(20px); }
+}
+
 .intro-tagline {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(1rem, 2.5vw, 1.6rem);
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-weight: 300;
-  letter-spacing: 0.25em;
-  color: #444;
+  letter-spacing: 0.28em;
+  color: #3a3a3a;
   font-style: italic;
-  margin: 0 0 50px;
+  margin: 0 0 44px;
   clip-path: inset(0 100% 0 0);
-  transition: clip-path 0.9s cubic-bezier(0.4,0,0.2,1) 0.05s;
+  transition: clip-path 0.7s cubic-bezier(0.4,0,0.2,1) 0.05s;
   white-space: nowrap;
+  position: relative;
+  z-index: 1;
 }
 .intro-phase.active .intro-tagline {
   clip-path: inset(0 0% 0 0);
@@ -122,7 +175,9 @@
 
 .intro-brand-chars {
   display: flex;
-  gap: 0.08em;
+  gap: 0.06em;
+  position: relative;
+  z-index: 1;
 }
 .ibc {
   font-family: 'Montserrat', Arial, sans-serif;
@@ -131,10 +186,10 @@
   color: #fff;
   line-height: 1;
   opacity: 0;
-  transform: translateY(50px) scale(0.75);
+  transform: translateY(40px) scale(0.8);
   display: inline-block;
-  letter-spacing: 0.05em;
-  text-shadow: 0 2px 30px rgba(255,255,255,0.06);
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 60px rgba(255,255,255,0.04);
 }
 
 /* ── PHASE 3: Photo rapid flash (fullscreen single) ── */

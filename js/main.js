@@ -74,27 +74,29 @@ document.addEventListener('DOMContentLoaded', function () {
       }, counterStep);
     }, 400);
 
-    /* ── PHASE 2: Tagline + Chars ── */
+    /* ── PHASE 2: Tagline + Chars (faster) ── */
     function startPhase2() {
       showPhase(phase2);
+      // Chars slam in faster
       chars.forEach(function (ch, i) {
         setTimeout(function () {
           ch.style.opacity = '1';
           ch.style.transform = 'translateY(0) scale(1)';
-          ch.style.transition = 'opacity 0.35s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1)';
-        }, 800 + i * 150);
+          ch.style.transition = 'opacity 0.25s ease, transform 0.35s cubic-bezier(0.22,1,0.36,1)';
+        }, 550 + i * 110);
       });
-      var dur = 800 + chars.length * 150 + 800;
+      // Hold then exit faster
+      var dur = 550 + chars.length * 110 + 500;
       setTimeout(function () {
         chars.forEach(function (ch) {
-          ch.style.transition = 'opacity 0.3s ease, transform 0.4s cubic-bezier(0.76,0,0.24,1)';
+          ch.style.transition = 'opacity 0.2s ease, transform 0.28s cubic-bezier(0.76,0,0.24,1)';
           ch.style.opacity = '0';
-          ch.style.transform = 'translateY(-30px) scale(1.08)';
+          ch.style.transform = 'translateY(-24px) scale(1.06)';
         });
         setTimeout(function () {
           hidePhase(phase2);
-          setTimeout(startPhase3, 150);
-        }, 350);
+          setTimeout(startPhase3, 100);
+        }, 280);
       }, dur);
     }
 
