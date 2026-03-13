@@ -3,11 +3,11 @@
 document.addEventListener('DOMContentLoaded', function () {
 
   /* =============================================
-     INTRO LOADER — High-Impact Multi-Phase Animation
-     Phase1: Logo flash in + counter sprint (0→100) ~2.5s
-     Phase2: Tagline wipe + chars slam in ~2.5s
-     Phase3: Photo rapid flash ~2s
-     Outro:  Black slam → site reveal ~1s
+     INTRO LOADER — Cinematic Multi-Phase Animation
+     Phase1: Logo + counter sprint ~2.5s
+     Phase2: Tagline + chars slam ~2.5s
+     Phase3: Photo flash x12 w/ varied animations ~3s
+     Outro:  Smooth fade reveal ~0.6s
      ============================================= */
   var introLoader = document.getElementById('introLoader');
 
@@ -26,11 +26,27 @@ document.addEventListener('DOMContentLoaded', function () {
     function showPhase(el) { if (el) el.classList.add('active'); }
     function hidePhase(el) { if (el) el.classList.remove('active'); }
 
-    /* ── PHASE 1: Logo + Fast Counter ── */
+    // Photo entry animations — each index gets a different style
+    var photoAnimations = [
+      { from: 'translateX(-6%) scale(1.06)',  to: 'translateX(0) scale(1)',   dur: '0.35s' },
+      { from: 'translateX(6%) scale(1.06)',   to: 'translateX(0) scale(1)',   dur: '0.35s' },
+      { from: 'translateY(-5%) scale(1.05)',  to: 'translateY(0) scale(1)',   dur: '0.3s'  },
+      { from: 'translateY(5%) scale(1.05)',   to: 'translateY(0) scale(1)',   dur: '0.3s'  },
+      { from: 'scale(1.12)',                  to: 'scale(1)',                  dur: '0.4s'  },
+      { from: 'scale(0.92)',                  to: 'scale(1)',                  dur: '0.3s'  },
+      { from: 'translateX(-8%) scale(1.04)',  to: 'translateX(0) scale(1)',   dur: '0.28s' },
+      { from: 'translateX(8%) scale(1.04)',   to: 'translateX(0) scale(1)',   dur: '0.28s' },
+      { from: 'scale(1.1) translateY(-3%)',   to: 'scale(1) translateY(0)',   dur: '0.35s' },
+      { from: 'scale(1.08) translateX(3%)',   to: 'scale(1) translateX(0)',   dur: '0.32s' },
+      { from: 'translateY(4%) scale(1.05)',   to: 'translateY(0) scale(1)',   dur: '0.3s'  },
+      { from: 'scale(0.94) translateY(-4%)',  to: 'scale(1) translateY(0)',   dur: '0.35s' },
+    ];
+
+    /* ── PHASE 1: Logo + Counter (no white flash) ── */
     showPhase(phase1);
 
     var count = 0;
-    var counterDuration = 1600; // faster sprint
+    var counterDuration = 1600;
     var counterStep = counterDuration / 100;
 
     setTimeout(function () {
@@ -43,91 +59,106 @@ document.addEventListener('DOMContentLoaded', function () {
         if (numEl) numEl.textContent = count;
         if (count >= 100) {
           clearInterval(timer);
-          // Flash white on completion
-          if (phase1) {
-            phase1.style.background = '#fff';
-            phase1.style.transition = 'background 0.05s';
+          // Smooth fade out — NO white flash
+          setTimeout(function () {
+            phase1.style.transition = 'opacity 0.5s ease';
+            phase1.style.opacity = '0';
             setTimeout(function () {
-              phase1.style.background = '';
-              phase1.style.transition = '';
               hidePhase(phase1);
-              setTimeout(startPhase2, 300);
-            }, 80);
-          } else {
-            setTimeout(startPhase2, 400);
-          }
+              phase1.style.opacity = '';
+              phase1.style.transition = '';
+              setTimeout(startPhase2, 200);
+            }, 500);
+          }, 300);
         }
       }, counterStep);
     }, 400);
 
-    /* ── PHASE 2: Tagline wipe + chars slam ── */
+    /* ── PHASE 2: Tagline + Chars ── */
     function startPhase2() {
       showPhase(phase2);
-      // Chars slam in with stagger
       chars.forEach(function (ch, i) {
         setTimeout(function () {
           ch.style.opacity = '1';
           ch.style.transform = 'translateY(0) scale(1)';
-          ch.style.transition = 'opacity 0.3s ease, transform 0.4s cubic-bezier(0.22,1,0.36,1)';
-        }, 800 + i * 160);
+          ch.style.transition = 'opacity 0.35s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1)';
+        }, 800 + i * 150);
       });
-      var phase2Duration = 800 + chars.length * 160 + 700;
+      var dur = 800 + chars.length * 150 + 800;
       setTimeout(function () {
-        // Slam out
         chars.forEach(function (ch) {
-          ch.style.transition = 'opacity 0.2s ease, transform 0.3s ease';
+          ch.style.transition = 'opacity 0.3s ease, transform 0.4s cubic-bezier(0.76,0,0.24,1)';
           ch.style.opacity = '0';
-          ch.style.transform = 'translateY(-20px) scale(1.1)';
+          ch.style.transform = 'translateY(-30px) scale(1.08)';
         });
         setTimeout(function () {
           hidePhase(phase2);
-          setTimeout(startPhase3, 200);
-        }, 300);
-      }, phase2Duration);
+          setTimeout(startPhase3, 150);
+        }, 350);
+      }, dur);
     }
 
-    /* ── PHASE 3: Rapid fullscreen photo flash ── */
+    /* ── PHASE 3: Cinematic photo flash with varied animations ── */
     function startPhase3() {
       showPhase(phase3);
 
-      // Add photo counter element
       var photoNumEl = document.createElement('div');
       photoNumEl.className = 'intro-photo-num';
       var photoContainer = document.getElementById('introPhotos');
       if (photoContainer) photoContainer.appendChild(photoNumEl);
 
-      var flashInterval = 220; // fast flash per photo
+      var flashInterval = 240;
       var idx = 0;
+      var prevPhoto = null;
 
       function flashNext() {
-        // Hide all
-        photos.forEach(function (p) { p.classList.remove('visible'); });
+        if (prevPhoto) {
+          prevPhoto.classList.remove('visible');
+          prevPhoto.style.transform = '';
+          prevPhoto.style.transition = '';
+        }
         if (idx < photos.length) {
-          photos[idx].classList.add('visible');
+          var photo = photos[idx];
+          var anim  = photoAnimations[idx % photoAnimations.length];
+
+          // Set entry transform
+          photo.style.transform  = anim.from;
+          photo.style.transition = 'none';
+          photo.classList.add('visible');
+
+          // Animate to final state
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              photo.style.transition = 'transform ' + anim.dur + ' cubic-bezier(0.22,1,0.36,1), opacity 0.15s ease';
+              photo.style.transform  = anim.to;
+            });
+          });
+
           if (photoNumEl) {
             photoNumEl.textContent = String(idx + 1).padStart(2,'0') + ' / ' + String(photos.length).padStart(2,'0');
           }
+
+          prevPhoto = photo;
           idx++;
           setTimeout(flashNext, flashInterval);
         } else {
-          // All shown — pause then outro
-          setTimeout(startOutro, 400);
+          setTimeout(startOutro, 500);
         }
       }
 
-      setTimeout(flashNext, 100);
+      setTimeout(flashNext, 80);
     }
 
-    /* ── OUTRO: Black slam + site reveal ── */
+    /* ── OUTRO: Smooth fade (no harsh cut) ── */
     function startOutro() {
       if (outro) {
+        outro.style.transition = 'opacity 0.6s cubic-bezier(0.4,0,0.2,1)';
         outro.style.pointerEvents = 'all';
-        outro.style.transition = 'opacity 0.3s ease';
         outro.classList.add('fade-in');
         setTimeout(function () {
           introLoader.classList.add('hidden');
           document.body.style.overflow = '';
-        }, 350);
+        }, 620);
       } else {
         introLoader.classList.add('hidden');
         document.body.style.overflow = '';
@@ -135,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  /* ── Navbar scroll effect ── */
+  /* ── Navbar scroll ── */
   var navbar = document.getElementById('navbar');
   if (navbar) {
     window.addEventListener('scroll', function () {
@@ -143,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  /* ── Mobile nav toggle ── */
+  /* ── Mobile nav ── */
   var navToggle = document.getElementById('navToggle');
   var navLinks  = document.getElementById('navLinks');
   if (navToggle && navLinks) {
@@ -161,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  /* ── Active nav link on scroll ── */
+  /* ── Active nav on scroll ── */
   var sections = document.querySelectorAll('section[id]');
   window.addEventListener('scroll', function () {
     var current = '';
@@ -194,7 +225,6 @@ document.addEventListener('DOMContentLoaded', function () {
       form.reset();
     });
   }
-
   function showToast(msg) {
     var toast = document.querySelector('.toast');
     if (!toast) {
