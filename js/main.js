@@ -3,27 +3,23 @@
 document.addEventListener('DOMContentLoaded', function () {
 
   /* ── Intro Loader ── */
-  const introLoader = document.getElementById('introLoader');
-  const introBar    = document.getElementById('introBar');
-  const introCounter = document.getElementById('introCounter');
+  var introLoader  = document.getElementById('introLoader');
+  var introCounter = document.getElementById('introCounter');
 
   if (introLoader) {
     document.body.style.overflow = 'hidden';
 
-    // Show logo
+    // Step 1: show text with clip-path reveal
     requestAnimationFrame(function () {
-      introLoader.classList.add('show-logo');
+      requestAnimationFrame(function () {
+        introLoader.classList.add('show-logo');
+      });
     });
 
-    // Start progress bar
-    setTimeout(function () {
-      if (introBar) introBar.classList.add('go');
-    }, 100);
-
-    // Animate counter 0 -> 100
-    var count = 0;
-    var duration = 1800;
-    var step = duration / 100;
+    // Step 2: animate counter 000 -> 100
+    var count    = 0;
+    var duration = 2000;
+    var step     = duration / 100;
     var timer = setInterval(function () {
       count++;
       if (introCounter) {
@@ -31,14 +27,15 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       if (count >= 100) {
         clearInterval(timer);
-        // Fade out loader
+        // Step 3: open curtain panels
         setTimeout(function () {
-          introLoader.classList.add('fade-out');
+          introLoader.classList.add('open');
+          // Step 4: hide after panels exit
           setTimeout(function () {
             introLoader.classList.add('hidden');
             document.body.style.overflow = '';
           }, 950);
-        }, 200);
+        }, 300);
       }
     }, step);
   }
