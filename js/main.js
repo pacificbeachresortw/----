@@ -2,77 +2,147 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-  /* ── Intro Loader ── */
-  var introLoader  = document.getElementById('introLoader');
-  var introCounter = document.getElementById('introCounter');
+  /* =============================================
+     INTRO LOADER — Multi-Phase Animation
+     Total ~10s:
+     Phase1: Logo + counter (0→100) ~4s
+     Phase2: Tagline scroll + chars pop ~3s
+     Phase3: Photo flash ~2s
+     Outro:  Fade black → reveal site ~1s
+     ============================================= */
+  var introLoader = document.getElementById('introLoader');
 
   if (introLoader) {
     document.body.style.overflow = 'hidden';
 
-    // Step 1: show text with clip-path reveal
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        introLoader.classList.add('show-logo');
-      });
-    });
+    var phase1 = document.getElementById('introPhase1');
+    var phase2 = document.getElementById('introPhase2');
+    var phase3 = document.getElementById('introPhase3');
+    var outro  = document.getElementById('introOutro');
+    var fill   = document.getElementById('introFill');
+    var numEl  = document.getElementById('introNum');
+    var chars  = Array.from(document.querySelectorAll('.ibc'));
+    var photos = Array.from(document.querySelectorAll('.intro-photo'));
 
-    // Step 2: animate counter 000 -> 100
-    var count    = 0;
-    var duration = 2000;
-    var step     = duration / 100;
-    var timer = setInterval(function () {
-      count++;
-      if (introCounter) {
-        introCounter.textContent = String(count).padStart(3, '0');
+    function showPhase(el) { if (el) el.classList.add('active'); }
+    function hidePhase(el) { if (el) el.classList.remove('active'); }
+
+    /* ── PHASE 1: Logo + Counter ── */
+    showPhase(phase1);
+
+    var count = 0;
+    var counterDuration = 3000;
+    var counterStep = counterDuration / 100;
+
+    // Start counter after logo appears
+    setTimeout(function () {
+      if (fill) {
+        fill.style.transition = 'width ' + counterDuration + 'ms linear';
+        fill.style.width = '100%';
       }
-      if (count >= 100) {
-        clearInterval(timer);
-        // Step 3: open curtain panels
-        setTimeout(function () {
-          introLoader.classList.add('open');
-          // Step 4: hide after panels exit
+      var timer = setInterval(function () {
+        count++;
+        if (numEl) numEl.textContent = count;
+        if (count >= 100) {
+          clearInterval(timer);
           setTimeout(function () {
-            introLoader.classList.add('hidden');
-            document.body.style.overflow = '';
-          }, 950);
-        }, 300);
+            hidePhase(phase1);
+            setTimeout(startPhase2, 500);
+          }, 600);
+        }
+      }, counterStep);
+    }, 700);
+
+    /* ── PHASE 2: Tagline + Brand Chars ── */
+    function startPhase2() {
+      showPhase(phase2);
+      // Stagger each character pop
+      chars.forEach(function (ch, i) {
+        setTimeout(function () {
+          ch.style.opacity = '1';
+          ch.style.transform = 'translateY(0) scale(1)';
+          ch.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.34,1.56,0.64,1)';
+        }, 900 + i * 220);
+      });
+      // After all chars visible, go to phase 3
+      var phase2Duration = 900 + chars.length * 220 + 1000;
+      setTimeout(function () {
+        hidePhase(phase2);
+        setTimeout(startPhase3, 400);
+      }, phase2Duration);
+    }
+
+    /* ── PHASE 3: Photo Flashes ── */
+    function startPhase3() {
+      showPhase(phase3);
+      photos.forEach(function (photo, i) {
+        setTimeout(function () {
+          photo.classList.add('visible');
+        }, i * 400);
+      });
+      // After all photos shown, fade to outro
+      var phase3Duration = photos.length * 400 + 700;
+      setTimeout(function () {
+        hidePhase(phase3);
+        startOutro();
+      }, phase3Duration);
+    }
+
+    /* ── OUTRO: Fade black then reveal site ── */
+    function startOutro() {
+      if (outro) {
+        outro.style.pointerEvents = 'all';
+        outro.classList.add('fade-in');
+        setTimeout(function () {
+          introLoader.classList.add('hidden');
+          document.body.style.overflow = '';
+          // slight delay then fade out outro overlay revealing page
+          outro.classList.remove('fade-in');
+          outro.classList.add('fade-out');
+        }, 900);
+      } else {
+        introLoader.classList.add('hidden');
+        document.body.style.overflow = '';
       }
-    }, step);
+    }
   }
 
   /* ── Navbar scroll effect ── */
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', function () {
-    if (window.scrollY > 60) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
-  });
+  var navbar = document.getElementById('navbar');
+  if (navbar) {
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 60) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  }
 
   /* ── Mobile nav toggle ── */
-  const navToggle = document.getElementById('navToggle');
-  const navLinks  = document.getElementById('navLinks');
+  var navToggle = document.getElementById('navToggle');
+  var navLinks  = document.getElementById('navLinks');
 
-  navToggle.addEventListener('click', function () {
-    navToggle.classList.toggle('open');
-    navLinks.classList.toggle('open');
-    document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
-  });
-
-  /* Close mobile nav on link click */
-  document.querySelectorAll('.nav-link').forEach(function (link) {
-    link.addEventListener('click', function () {
-      navToggle.classList.remove('open');
-      navLinks.classList.remove('open');
-      document.body.style.overflow = '';
+  if (navToggle && navLinks) {
+    navToggle.addEventListener('click', function () {
+      navToggle.classList.toggle('open');
+      navLinks.classList.toggle('open');
+      document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
     });
-  });
+
+    document.querySelectorAll('.nav-link').forEach(function (link) {
+      link.addEventListener('click', function () {
+        navToggle.classList.remove('open');
+        navLinks.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+  }
 
   /* ── Active nav link on scroll ── */
-  const sections = document.querySelectorAll('section[id]');
+  var sections = document.querySelectorAll('section[id]');
   window.addEventListener('scroll', function () {
-    let current = '';
+    var current = '';
     sections.forEach(function (section) {
       if (window.scrollY >= section.offsetTop - 120) {
         current = section.getAttribute('id');
@@ -86,9 +156,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* ── Reveal on scroll (IntersectionObserver) ── */
-  const revealEls = document.querySelectorAll('.reveal');
-  const revealObserver = new IntersectionObserver(function (entries) {
+  /* ── Reveal on scroll ── */
+  var revealEls = document.querySelectorAll('.reveal');
+  var revealObserver = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
@@ -96,13 +166,10 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }, { threshold: 0.12 });
-
-  revealEls.forEach(function (el) {
-    revealObserver.observe(el);
-  });
+  revealEls.forEach(function (el) { revealObserver.observe(el); });
 
   /* ── Contact form submit ── */
-  const form = document.getElementById('contactForm');
+  var form = document.getElementById('contactForm');
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -113,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ── Toast helper ── */
   function showToast(msg) {
-    let toast = document.querySelector('.toast');
+    var toast = document.querySelector('.toast');
     if (!toast) {
       toast = document.createElement('div');
       toast.className = 'toast';
@@ -124,10 +191,10 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(function () { toast.classList.remove('show'); }, 3500);
   }
 
-  /* ── Smooth scroll for anchor links ── */
+  /* ── Smooth scroll ── */
   document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
-      const target = document.querySelector(this.getAttribute('href'));
+      var target = document.querySelector(this.getAttribute('href'));
       if (target) {
         e.preventDefault();
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });

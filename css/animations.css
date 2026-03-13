@@ -1,7 +1,7 @@
 /* 汐奎攝影 — Animations, Form, Footer, Responsive */
 
 /* =============================================
-   INTRO LOADER — 藝術感入場動畫
+   INTRO LOADER — 多階段藝術入場動畫
    ============================================= */
 
 .intro-loader {
@@ -10,125 +10,134 @@
   z-index: 9999;
   background: #000;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
-
-/* 左右分割幕 */
-.intro-panel {
-  position: absolute;
-  top: 0;
-  width: 50%;
-  height: 100%;
-  background: #000;
-  z-index: 2;
-  transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
-}
-.intro-panel-left  { left: 0; transform-origin: left; }
-.intro-panel-right { right: 0; transform-origin: right; }
-
-.intro-loader.open .intro-panel-left  { transform: translateX(-100%); }
-.intro-loader.open .intro-panel-right { transform: translateX(100%); }
 .intro-loader.hidden { display: none; }
 
-/* 中央內容區 */
-.intro-center {
-  position: relative;
-  z-index: 3;
+/* ── Phase base ── */
+.intro-phase {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0;
+  justify-content: center;
   opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
 }
-.intro-loader.show-logo .intro-center {
-  opacity: 1;
-  transform: translateY(0);
-}
+.intro-phase.active { opacity: 1; }
 
-/* 上下橫線 — 由中展開 */
-.intro-line-top,
-.intro-line-bottom {
-  width: 0;
-  height: 1px;
-  background: #2a2a2a;
-  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.intro-loader.show-logo .intro-line-top,
-.intro-loader.show-logo .intro-line-bottom {
-  width: 260px;
-}
-
-/* 文字組 */
-.intro-text-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 24px 0;
-  overflow: hidden;
-}
-
-.intro-logo-img {
-  height: 72px;
+/* ── Phase 1: Logo + Counter ── */
+.intro-logo-main {
+  height: clamp(60px, 12vw, 100px);
   width: auto;
   filter: brightness(0) invert(1);
   opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s;
+  transform: translateY(16px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
-.intro-loader.show-logo .intro-logo-img {
+.intro-phase.active .intro-logo-main {
   opacity: 1;
   transform: translateY(0);
 }
 
-.intro-text-en {
-  font-family: 'Montserrat', Arial, sans-serif;
-  font-size: 0.6rem;
-  font-weight: 300;
-  letter-spacing: 0.55em;
-  color: #444;
-  text-transform: uppercase;
-  clip-path: inset(0 0 100% 0);
-  transition: clip-path 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
-}
-.intro-loader.show-logo .intro-text-en {
-  clip-path: inset(0 0 0% 0);
-}
-
-.intro-text-sub {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 0.75rem;
-  font-weight: 300;
-  letter-spacing: 0.35em;
-  color: #333;
-  font-style: italic;
-  clip-path: inset(0 0 100% 0);
-  transition: clip-path 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.45s;
-}
-.intro-loader.show-logo .intro-text-sub {
-  clip-path: inset(0 0 0% 0);
-}
-
-/* 右下角計數器 */
-.intro-counter-corner {
-  position: fixed;
-  bottom: 32px;
-  right: 36px;
-  z-index: 9999;
-  font-family: 'Montserrat', Arial, sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  color: #2a2a2a;
+.intro-counter-wrap {
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.5s ease 0.4s;
 }
-.intro-loader.show-logo .intro-counter-corner {
+.intro-phase.active .intro-counter-wrap { opacity: 1; }
+
+.intro-counter-bar {
+  width: 200px;
+  height: 1px;
+  background: #1a1a1a;
+  position: relative;
+  overflow: hidden;
+}
+.intro-counter-fill {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 0%;
+  background: #333;
+  transition: width linear;
+}
+.intro-counter-num {
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: #2a2a2a;
+}
+
+/* ── Phase 2: Tagline + Brand chars ── */
+.intro-tagline {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.1rem, 3vw, 1.8rem);
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: #555;
+  font-style: italic;
+  margin: 0 0 40px;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+}
+.intro-phase.active .intro-tagline {
+  clip-path: inset(0 0% 0 0);
+}
+
+.intro-brand-chars {
+  display: flex;
+  gap: 0.1em;
+}
+.ibc {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(3rem, 10vw, 7rem);
+  font-weight: 400;
+  color: #fff;
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(30px) scale(0.9);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+/* Each char delayed via JS */
+
+/* ── Phase 3: Photo flashes ── */
+.intro-photos {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.intro-photo {
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(100%) brightness(0.6);
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity 0.4s ease, transform 0.8s ease;
+}
+.intro-photo.visible {
   opacity: 1;
+  transform: scale(1);
 }
+
+/* ── Outro overlay (fade to black then reveal) ── */
+.intro-outro {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+.intro-outro.fade-in { opacity: 1; }
+.intro-outro.fade-out { opacity: 0; }
 
 /* Form (continued) */
 .form-label{position:absolute;top:16px;left:0;font-family:var(--font-sans);font-size:.75rem;color:var(--gray);letter-spacing:.1em;transition:all 0.3s ease;pointer-events:none}
@@ -173,14 +182,12 @@
 /* =============================================
    RESPONSIVE
    ============================================= */
-
 @media(max-width:1024px){
   .about-grid{grid-template-columns:1fr;gap:60px}
   .about-image-wrap{max-width:480px;margin:0 auto}
   .contact-grid{grid-template-columns:1fr;gap:60px}
   .services-grid{grid-template-columns:1fr}
 }
-
 @media(max-width:768px){
   .container{padding:0 24px}
   .nav-links{display:none;position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(0,0,0,.98);flex-direction:column;align-items:center;justify-content:center;gap:32px}
@@ -198,8 +205,8 @@
   .contact{padding:80px 0}
   .quote-banner{padding:70px 24px}
   .footer{padding:50px 24px}
+  .intro-photos{grid-template-columns:1fr}
 }
-
 @media(max-width:480px){
   .portfolio-grid{grid-template-columns:1fr;grid-auto-rows:260px}
   .portfolio-item.large{grid-column:span 1}
@@ -208,5 +215,5 @@
   .contact-grid{gap:40px}
   .footer-links{gap:16px}
   .nav-container{padding:0 20px}
-  .intro-text-jp{font-size:3rem}
+  .ibc{font-size:3.5rem}
 }

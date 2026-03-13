@@ -29,18 +29,38 @@
 
   <!-- INTRO LOADER -->
   <div class="intro-loader" id="introLoader">
-    <div class="intro-panel intro-panel-left"></div>
-    <div class="intro-panel intro-panel-right"></div>
-    <div class="intro-center">
-      <div class="intro-line-top"></div>
-      <div class="intro-text-wrap">
-        <img src="logo/logo.png" alt="汐奎攝影" class="intro-logo-img" />
-        <span class="intro-text-en">XIKUI PHOTOGRAPHY</span>
-        <span class="intro-text-sub">廢墟．建築．時光</span>
+
+    <!-- Phase 1: Logo + Counter -->
+    <div class="intro-phase" id="introPhase1">
+      <img src="logo/logo.png" alt="汐奎攝影" class="intro-logo-main" />
+      <div class="intro-counter-wrap">
+        <div class="intro-counter-bar"><div class="intro-counter-fill" id="introFill"></div></div>
+        <span class="intro-counter-num" id="introNum">0</span>
       </div>
-      <div class="intro-line-bottom"></div>
     </div>
-    <div class="intro-counter-corner" id="introCounter">000</div>
+
+    <!-- Phase 2: Tagline + Brand name -->
+    <div class="intro-phase" id="introPhase2">
+      <p class="intro-tagline" id="introTagline">紀錄廢墟曾經的輝煌</p>
+      <div class="intro-brand-chars" id="introBrandChars">
+        <span class="ibc">汐</span>
+        <span class="ibc">奎</span>
+        <span class="ibc">攝</span>
+        <span class="ibc">影</span>
+      </div>
+    </div>
+
+    <!-- Phase 3: Photo flashes -->
+    <div class="intro-phase" id="introPhase3">
+      <div class="intro-photos">
+        <div class="intro-photo ip1" style="background-image:url('海中天作品01/1.png')"></div>
+        <div class="intro-photo ip2" style="background-image:url('地中海作品02/01.png')"></div>
+        <div class="intro-photo ip3" style="background-image:url('八仙樂園作品03/001.png')"></div>
+      </div>
+    </div>
+
+    <!-- Phase 4: Final fade out overlay -->
+    <div class="intro-outro" id="introOutro"></div>
   </div>
 
   <!-- NAV -->
