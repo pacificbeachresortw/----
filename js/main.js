@@ -23,8 +23,25 @@ document.addEventListener('DOMContentLoaded', function () {
     var chars  = Array.from(document.querySelectorAll('.ibc'));
     var photos = Array.from(document.querySelectorAll('.intro-photo'));
 
+    var skipBtn = document.getElementById('introSkip');
+    var skipped = false;
+
     function showPhase(el) { if (el) el.classList.add('active'); }
     function hidePhase(el) { if (el) el.classList.remove('active'); }
+
+    // Skip button click — jump straight to outro
+    if (skipBtn) {
+      skipBtn.addEventListener('click', function () {
+        if (skipped) return;
+        skipped = true;
+        skipBtn.classList.remove('visible');
+        // Hide all phases immediately
+        [phase1, phase2, phase3].forEach(function (p) {
+          if (p) { p.style.transition = 'opacity 0.2s ease'; p.style.opacity = '0'; }
+        });
+        setTimeout(startOutro, 220);
+      });
+    }
 
     // Photo entry animations — each index gets a different style
     var photoAnimations = [
@@ -59,6 +76,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (numEl) numEl.textContent = count;
         if (count >= 100) {
           clearInterval(timer);
+          // Show skip button after phase 1 completes
+          if (skipBtn) skipBtn.classList.add('visible');
           // Smooth fade out — NO white flash
           setTimeout(function () {
             phase1.style.transition = 'opacity 0.5s ease';
@@ -166,6 +185,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* ── OUTRO: Fade black → reveal site with entrance animation ── */
     function startOutro() {
+      if (skipBtn) { skipBtn.classList.remove('visible'); skipBtn.style.display = 'none'; }
       if (outro) {
         // 1. Fade to black
         outro.style.transition = 'opacity 0.5s cubic-bezier(0.4,0,0.2,1)';
