@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }, dur);
     }
 
-    /* ── PHASE 3: Cinematic photo flash with varied animations ── */
+    /* ── PHASE 3: Fade-in / hold / fade-out per photo ── */
     function startPhase3() {
       showPhase(phase3);
 
@@ -107,46 +107,59 @@ document.addEventListener('DOMContentLoaded', function () {
       var photoContainer = document.getElementById('introPhotos');
       if (photoContainer) photoContainer.appendChild(photoNumEl);
 
-      var flashInterval = 240;
+      var fadeInDur  = 300;   // ms fade in
+      var holdDur    = 280;   // ms hold at full opacity
+      var fadeOutDur = 220;   // ms fade out
+      var totalPerPhoto = fadeInDur + holdDur + fadeOutDur;
+
       var idx = 0;
-      var prevPhoto = null;
 
-      function flashNext() {
-        if (prevPhoto) {
-          prevPhoto.classList.remove('visible');
-          prevPhoto.style.transform = '';
-          prevPhoto.style.transition = '';
+      function showNext() {
+        if (idx >= photos.length) {
+          setTimeout(startOutro, 400);
+          return;
         }
-        if (idx < photos.length) {
-          var photo = photos[idx];
-          var anim  = photoAnimations[idx % photoAnimations.length];
 
-          // Set entry transform
-          photo.style.transform  = anim.from;
-          photo.style.transition = 'none';
-          photo.classList.add('visible');
+        var photo = photos[idx];
+        var anim  = photoAnimations[idx % photoAnimations.length];
 
-          // Animate to final state
+        // Reset
+        photo.style.transition = 'none';
+        photo.style.opacity    = '0';
+        photo.style.transform  = anim.from;
+        photo.classList.add('visible');
+
+        // Fade IN + slide
+        requestAnimationFrame(function () {
           requestAnimationFrame(function () {
-            requestAnimationFrame(function () {
-              photo.style.transition = 'transform ' + anim.dur + ' cubic-bezier(0.22,1,0.36,1), opacity 0.15s ease';
-              photo.style.transform  = anim.to;
-            });
+            photo.style.transition = 'opacity ' + (fadeInDur/1000) + 's ease, transform ' + anim.dur + ' cubic-bezier(0.22,1,0.36,1)';
+            photo.style.opacity    = '1';
+            photo.style.transform  = anim.to;
+
+            if (photoNumEl) {
+              photoNumEl.textContent = String(idx + 1).padStart(2,'0') + ' / ' + String(photos.length).padStart(2,'0');
+            }
           });
+        });
 
-          if (photoNumEl) {
-            photoNumEl.textContent = String(idx + 1).padStart(2,'0') + ' / ' + String(photos.length).padStart(2,'0');
-          }
+        // Hold then FADE OUT
+        setTimeout(function () {
+          photo.style.transition = 'opacity ' + (fadeOutDur/1000) + 's ease';
+          photo.style.opacity    = '0';
 
-          prevPhoto = photo;
-          idx++;
-          setTimeout(flashNext, flashInterval);
-        } else {
-          setTimeout(startOutro, 500);
-        }
+          // Next photo after fade out
+          setTimeout(function () {
+            photo.classList.remove('visible');
+            photo.style.opacity   = '';
+            photo.style.transform = '';
+            photo.style.transition= '';
+            idx++;
+            showNext();
+          }, fadeOutDur);
+        }, fadeInDur + holdDur);
       }
 
-      setTimeout(flashNext, 80);
+      setTimeout(showNext, 80);
     }
 
     /* ── OUTRO: Smooth fade (no harsh cut) ── */
