@@ -1,5 +1,30 @@
 /* 汐奎攝影 XIKUI PHOTOGRAPHY — Main JS */
 
+/* ── Lenis Smooth Scroll ── */
+var lenis = null;
+
+function initLenis() {
+  if (typeof Lenis === 'undefined') return;
+  lenis = new Lenis({
+    duration: 1.3,
+    easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+    smoothWheel: true,
+    smoothTouch: false,
+    touchMultiplier: 1.8,
+  });
+
+  function rafLoop(time) {
+    lenis.raf(time);
+    requestAnimationFrame(rafLoop);
+  }
+  requestAnimationFrame(rafLoop);
+
+  /* Forward Lenis scroll events to native listeners */
+  lenis.on('scroll', function (e) {
+    window.dispatchEvent(new CustomEvent('lenis-scroll', { detail: e }));
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
   /* =============================================
@@ -282,9 +307,11 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ── Navbar scroll ── */
   var navbar = document.getElementById('navbar');
   if (navbar) {
-    window.addEventListener('scroll', function () {
+    var onScroll = function () {
       navbar.classList.toggle('scrolled', window.scrollY > 60);
-    });
+    };
+    window.addEventListener('scroll', onScroll);
+    window.addEventListener('lenis-scroll', onScroll);
   }
 
   /* ── Mobile nav ── */
@@ -307,7 +334,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ── Active nav on scroll ── */
   var sections = document.querySelectorAll('section[id]');
-  window.addEventListener('scroll', function () {
+  var onScrollActive = function () {
     var current = '';
     sections.forEach(function (s) {
       if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id');
@@ -315,7 +342,9 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.nav-link').forEach(function (link) {
       link.classList.toggle('active', link.getAttribute('href') === '#' + current);
     });
-  });
+  };
+  window.addEventListener('scroll', onScrollActive);
+  window.addEventListener('lenis-scroll', onScrollActive);
 
   /* ── Reveal on scroll ── */
   var revealEls = document.querySelectorAll('.reveal');
@@ -350,15 +379,25 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(function () { toast.classList.remove('show'); }, 3500);
   }
 
-  /* ── Smooth scroll ── */
+  /* ── Smooth scroll (via Lenis or native) ── */
   document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
       var target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
+      if (!target) return;
+      e.preventDefault();
+      if (lenis) {
+        lenis.scrollTo(target, { offset: 0, duration: 1.4 });
+      } else {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
   });
 
 });
+
+/* Start Lenis after DOM is ready */
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLenis);
+} else {
+  initLenis();
+}
