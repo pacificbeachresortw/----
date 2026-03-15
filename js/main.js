@@ -403,6 +403,54 @@ if (document.readyState === 'loading') {
   initLenis();
 }
 
+/* ── Portfolio Hover Slideshow ── */
+(function () {
+  document.querySelectorAll('.portfolio-item[data-slides]').forEach(function (item) {
+    var slides = item.getAttribute('data-slides').split(',');
+    if (slides.length < 2) return;
+
+    var imgDiv  = item.querySelector('.portfolio-img');
+    var nextDiv = item.querySelector('.portfolio-img-next');
+    if (!imgDiv || !nextDiv) return;
+
+    var timer      = null;
+    var currentIdx = 0;
+
+    item.addEventListener('mouseenter', function () {
+      if (timer) return;
+      timer = setInterval(function () {
+        currentIdx = (currentIdx + 1) % slides.length;
+        var src = slides[currentIdx].trim();
+
+        /* Pre-load */
+        var img = new Image();
+        img.onload = function () {
+          nextDiv.style.backgroundImage = "url('" + src + "')";
+          nextDiv.classList.add('visible');
+
+          /* After crossfade completes, swap base and reset overlay */
+          setTimeout(function () {
+            imgDiv.style.backgroundImage = "url('" + src + "')";
+            nextDiv.classList.remove('visible');
+          }, 950);
+        };
+        img.src = src;
+      }, 3000);
+    });
+
+    item.addEventListener('mouseleave', function () {
+      clearInterval(timer);
+      timer = null;
+      nextDiv.classList.remove('visible');
+      /* Reset to first image after overlay fades out */
+      setTimeout(function () {
+        currentIdx = 0;
+        imgDiv.style.backgroundImage = "url('" + slides[0].trim() + "')";
+      }, 950);
+    });
+  });
+})();
+
 /* ── Custom Cursor ── */
 (function () {
   var ring = document.getElementById('cursorRing');

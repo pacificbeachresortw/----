@@ -190,7 +190,20 @@ em{font-style:italic}
 .p-bg-4{background:linear-gradient(135deg,#222 0%,#111 60%,#333 100%)}
 .p-bg-5{background:linear-gradient(135deg,#181818 0%,#383838 60%,#101010 100%)}
 .p-bg-6{background:linear-gradient(135deg,#141414 0%,#303030 60%,#1c1c1c 100%)}
-.portfolio-number{font-family:var(--font-serif);font-size:4rem;color:rgba(255,255,255,.06);font-weight:400;line-height:1;user-select:none}
+/* Portfolio image slideshow overlay */
+.portfolio-img-next {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(100%) brightness(0.65);
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(0.4,0,0.2,1);
+  z-index: 1;
+}
+.portfolio-img-next.visible { opacity: 1; }
+
+.portfolio-number{font-family:var(--font-serif);font-size:4rem;color:rgba(255,255,255,.06);font-weight:400;line-height:1;user-select:none;position:relative;z-index:2;}
 .portfolio-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.9) 0%,rgba(0,0,0,.2) 50%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:28px;transform:translateY(8px);opacity:0;transition:var(--tr)}
 .portfolio-item:hover .portfolio-overlay{opacity:1;transform:translateY(0)}
 .portfolio-item:hover .portfolio-img{transform:scale(1.04)}
