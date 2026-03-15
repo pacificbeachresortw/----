@@ -29,12 +29,12 @@
 
 /* ── PHASE 1: Logo + Counter ── */
 .intro-logo-main {
-  height: clamp(60px, 14vw, 110px);
+  height: clamp(32px, 6vw, 48px);
   width: auto;
   filter: brightness(0) invert(1);
   opacity: 0;
-  transform: scale(0.88);
-  transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
+  transform: scale(0.92);
+  transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 1s cubic-bezier(0.22,1,0.36,1);
 }
 .intro-phase.active .intro-logo-main {
   opacity: 1;
@@ -42,20 +42,20 @@
 }
 
 .intro-counter-wrap {
-  margin-top: 52px;
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
   opacity: 0;
-  transition: opacity 0.5s ease 0.4s;
+  transition: opacity 0.5s ease 0.5s;
 }
 .intro-phase.active .intro-counter-wrap { opacity: 1; }
 
 .intro-counter-bar {
-  width: 260px;
+  width: 160px;
   height: 1px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.08);
   position: relative;
   overflow: hidden;
 }
@@ -64,27 +64,27 @@
   top: 0; left: 0;
   height: 100%;
   width: 0%;
-  background: linear-gradient(to right, transparent, rgba(255,255,255,0.9), rgba(255,255,255,0.5));
-  box-shadow: 0 0 12px rgba(255,255,255,0.6), 0 0 24px rgba(255,255,255,0.2);
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.7), rgba(255,255,255,0.3));
+  box-shadow: 0 0 8px rgba(255,255,255,0.4);
 }
 
 /* Camera-style loading label above counter */
 .intro-counter-label {
   font-family: 'Montserrat', Arial, sans-serif;
-  font-size: 0.38rem;
+  font-size: 0.32rem;
   font-weight: 400;
-  letter-spacing: 0.55em;
-  color: rgba(255,255,255,0.25);
+  letter-spacing: 0.6em;
+  color: rgba(255,255,255,0.18);
   text-transform: uppercase;
-  margin-bottom: 2px;
+  margin-bottom: 0;
 }
 
 .intro-counter-num {
   font-family: 'Montserrat', Arial, sans-serif;
-  font-size: clamp(0.85rem, 2vw, 1.15rem);
+  font-size: clamp(0.65rem, 1.4vw, 0.82rem);
   font-weight: 200;
-  letter-spacing: 0.22em;
-  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.3em;
+  color: rgba(255,255,255,0.4);
   line-height: 1;
   transition: color 0.1s;
 }
