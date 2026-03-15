@@ -402,3 +402,69 @@ if (document.readyState === 'loading') {
 } else {
   initLenis();
 }
+
+/* ── Custom Cursor ── */
+(function () {
+  var ring = document.getElementById('cursorRing');
+  var dot  = document.getElementById('cursorDot');
+  if (!ring || !dot) return;
+
+  var mouseX = -100, mouseY = -100;
+  var ringX  = -100, ringY  = -100;
+  var isTouch = false;
+
+  /* Detect touch to hide cursor */
+  window.addEventListener('touchstart', function () {
+    isTouch = true;
+    ring.style.opacity = '0';
+    dot.style.opacity  = '0';
+  }, { once: true });
+
+  /* Track mouse position */
+  document.addEventListener('mousemove', function (e) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    /* Dot snaps to mouse immediately */
+    dot.style.left = mouseX + 'px';
+    dot.style.top  = mouseY + 'px';
+  });
+
+  /* Ring follows with smooth lag */
+  function rafCursor() {
+    ringX += (mouseX - ringX) * 0.1;
+    ringY += (mouseY - ringY) * 0.1;
+    ring.style.left = ringX + 'px';
+    ring.style.top  = ringY + 'px';
+    requestAnimationFrame(rafCursor);
+  }
+  rafCursor();
+
+  /* Hover state on interactive elements */
+  var hoverEls = document.querySelectorAll(
+    'a, button, .portfolio-item, .filter-btn, .social-btn, .nav-toggle, .intro-skip'
+  );
+  hoverEls.forEach(function (el) {
+    el.addEventListener('mouseenter', function () {
+      ring.classList.add('cursor-hover');
+      dot.classList.add('cursor-hover');
+    });
+    el.addEventListener('mouseleave', function () {
+      ring.classList.remove('cursor-hover');
+      dot.classList.remove('cursor-hover');
+    });
+  });
+
+  /* Click state */
+  document.addEventListener('mousedown', function () { ring.classList.add('cursor-click'); });
+  document.addEventListener('mouseup',   function () { ring.classList.remove('cursor-click'); });
+
+  /* Fade out when mouse leaves window */
+  document.addEventListener('mouseleave', function () {
+    ring.style.opacity = '0';
+    dot.style.opacity  = '0';
+  });
+  document.addEventListener('mouseenter', function () {
+    ring.style.opacity = '1';
+    dot.style.opacity  = '1';
+  });
+})();
