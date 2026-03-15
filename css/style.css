@@ -10,7 +10,7 @@
   --tr:0.4s cubic-bezier(0.25,0.46,0.45,0.94);
   --tr-slow:0.7s cubic-bezier(0.25,0.46,0.45,0.94);
 }
-html{scroll-behavior:smooth}
+html{scroll-behavior:auto}
 body{background:var(--black-soft);color:var(--white);font-family:var(--font-sans);font-weight:300;line-height:1.7;overflow-x:hidden}
 img{max-width:100%;display:block}
 a{text-decoration:none;color:inherit}

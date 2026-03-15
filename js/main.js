@@ -6,11 +6,12 @@ var lenis = null;
 function initLenis() {
   if (typeof Lenis === 'undefined') return;
   lenis = new Lenis({
-    duration: 1.3,
-    easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+    duration: 1.0,
+    easing: function (t) { return 1 - Math.pow(1 - t, 4); },
     smoothWheel: true,
     smoothTouch: false,
-    touchMultiplier: 1.8,
+    wheelMultiplier: 1,
+    touchMultiplier: 1.5,
   });
 
   function rafLoop(time) {
