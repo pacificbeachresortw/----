@@ -9,50 +9,41 @@
 .cursor-ring {
   position: fixed;
   top: 0; left: 0;
-  width: 38px; height: 38px;
-  border: 1px solid rgba(255,255,255,0.55);
+  width: 36px; height: 36px;
+  border: 1px solid rgba(255,255,255,0.5);
   border-radius: 50%;
   pointer-events: none;
   z-index: 999999;
   transform: translate(-50%, -50%);
-  transition: width 0.28s cubic-bezier(0.22,1,0.36,1),
-              height 0.28s cubic-bezier(0.22,1,0.36,1),
-              border-color 0.28s ease,
-              background 0.28s ease,
+  transition: width 0.25s ease, height 0.25s ease,
+              border-color 0.25s ease, background 0.25s ease,
               opacity 0.3s ease;
-  will-change: transform;
-  mix-blend-mode: difference;
 }
 
 .cursor-dot {
   position: fixed;
   top: 0; left: 0;
-  width: 5px; height: 5px;
-  background: #fff;
+  width: 4px; height: 4px;
+  background: rgba(255,255,255,0.9);
   border-radius: 50%;
   pointer-events: none;
   z-index: 999999;
   transform: translate(-50%, -50%);
-  transition: opacity 0.3s ease, transform 0.15s ease;
-  will-change: transform;
-  mix-blend-mode: difference;
+  transition: opacity 0.3s ease;
 }
 
 .cursor-ring.cursor-hover {
-  width: 60px; height: 60px;
-  border-color: rgba(255,255,255,0.8);
-  background: rgba(255,255,255,0.06);
+  width: 52px; height: 52px;
+  border-color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.05);
 }
 
 .cursor-ring.cursor-click {
-  width: 26px; height: 26px;
-  background: rgba(255,255,255,0.12);
+  width: 22px; height: 22px;
   border-color: rgba(255,255,255,0.9);
 }
 
-.cursor-dot.cursor-hover {
-  transform: translate(-50%, -50%) scale(0.4);
-}
+.cursor-dot.cursor-hover { opacity: 0.3; }
 
 /* Hide on touch devices */
 @media (hover: none), (pointer: coarse) {
@@ -129,7 +120,6 @@ em{font-style:italic}
   background-position:center;
   opacity:0;
   animation:heroBgFade 32s ease-in-out infinite;
-  will-change:transform,opacity;
 }
 .hero-bg-slide:nth-child(1){animation-delay:0s;}
 .hero-bg-slide:nth-child(2){animation-delay:-8s;}
@@ -176,17 +166,21 @@ em{font-style:italic}
 
 /* Portfolio */
 .portfolio{padding:120px 0;background:var(--black-soft)}
+.portfolio > .container { max-width: 100%; padding: 0 16px; }
 .portfolio-filter{display:flex;justify-content:center;gap:8px;margin-bottom:50px;flex-wrap:wrap}
 .filter-btn{background:none;border:1px solid transparent;color:var(--gray);font-family:var(--font-sans);font-size:.65rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;padding:8px 20px;cursor:pointer;transition:var(--tr)}
 .filter-btn:hover{color:var(--white);border-color:var(--gray-dark)}
 .filter-btn.active{color:var(--white);border-color:var(--white)}
-.portfolio-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:260px;gap:8px}
-.portfolio-item{position:relative;overflow:hidden;cursor:pointer}
-.portfolio-item.large{grid-column:span 2;grid-row:span 2}
-.portfolio-item.wide{grid-column:span 2}
-.portfolio-item.tall{grid-row:span 2}
-.portfolio-item.w3{grid-column:span 3}
-.portfolio-img{width:100%;height:100%;transition:transform var(--tr-slow);display:flex;align-items:flex-start;padding:20px}
+/* 3-column grid, all items 16:9, main works span 2 cols */
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.portfolio-item{position:relative;overflow:hidden;cursor:pointer;aspect-ratio:16/9}
+.portfolio-item.main{grid-column:span 2;aspect-ratio:16/9}
+.portfolio-item.wide{grid-column:span 2;aspect-ratio:16/9}
+.portfolio-item.large{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}
+.portfolio-item.tall{grid-row:span 2;aspect-ratio:auto}
+.portfolio-item.w3{grid-column:span 3;aspect-ratio:16/9}
+/* Images fill entire cell */
+.portfolio-img{position:absolute;inset:0;width:100%;height:100%;transition:transform var(--tr-slow);display:flex;align-items:flex-start;padding:16px}
 .p-bg-1{background:linear-gradient(135deg,#111 0%,#2a2a2a 60%,#161616 100%)}
 .p-bg-2{background:linear-gradient(135deg,#1a1a1a 0%,#3a3a3a 60%,#111 100%)}
 .p-bg-3{background:linear-gradient(135deg,#0d0d0d 0%,#2d2d2d 60%,#1a1a1a 100%)}

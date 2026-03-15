@@ -568,36 +568,27 @@ body.site-enter .navbar {
    PORTFOLIO — Cinematic group reveal
    ============================================= */
 
-/* All items: start clipped from bottom + slightly dark */
+/* Portfolio reveal - simple fade up (no clip-path for performance) */
 .portfolio-item {
   opacity: 0;
-  transform: translateY(28px) scale(0.97);
-  clip-path: inset(0 0 100% 0);
-  transition:
-    opacity 0.7s cubic-bezier(0.22,1,0.36,1),
-    transform 0.75s cubic-bezier(0.22,1,0.36,1),
-    clip-path 0.75s cubic-bezier(0.22,1,0.36,1);
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22,1,0.36,1);
 }
-
-/* Group 1: items 1 & 2 appear together */
-.portfolio-grid.visible .portfolio-item:nth-child(1),
-.portfolio-grid.visible .portfolio-item:nth-child(2) {
-  transition-delay: 0s;
-}
-/* Group 2: items 3 & 4 appear together, 140ms later */
-.portfolio-grid.visible .portfolio-item:nth-child(3),
-.portfolio-grid.visible .portfolio-item:nth-child(4) {
-  transition-delay: 0.14s;
-}
-/* Group 3: items 5 & 6 appear together, 280ms later */
-.portfolio-grid.visible .portfolio-item:nth-child(5),
-.portfolio-grid.visible .portfolio-item:nth-child(6) {
-  transition-delay: 0.28s;
-}
+.portfolio-grid.visible .portfolio-item:nth-child(1) { transition-delay: 0s; }
+.portfolio-grid.visible .portfolio-item:nth-child(2) { transition-delay: 0.06s; }
+.portfolio-grid.visible .portfolio-item:nth-child(3) { transition-delay: 0.12s; }
+.portfolio-grid.visible .portfolio-item:nth-child(4) { transition-delay: 0.06s; }
+.portfolio-grid.visible .portfolio-item:nth-child(5) { transition-delay: 0.12s; }
+.portfolio-grid.visible .portfolio-item:nth-child(6) { transition-delay: 0.18s; }
+.portfolio-grid.visible .portfolio-item:nth-child(7) { transition-delay: 0.12s; }
+.portfolio-grid.visible .portfolio-item:nth-child(8) { transition-delay: 0.18s; }
+.portfolio-grid.visible .portfolio-item:nth-child(9) { transition-delay: 0.24s; }
+.portfolio-grid.visible .portfolio-item:nth-child(10){ transition-delay: 0.18s; }
+.portfolio-grid.visible .portfolio-item:nth-child(11){ transition-delay: 0.24s; }
+.portfolio-grid.visible .portfolio-item:nth-child(12){ transition-delay: 0.30s; }
 .portfolio-grid.visible .portfolio-item {
   opacity: 1;
-  transform: translateY(0) scale(1);
-  clip-path: inset(0 0 0% 0);
+  transform: translateY(0);
 }
 
 /* =============================================
