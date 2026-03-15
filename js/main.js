@@ -101,6 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
       showPhase(phase2);
 
       var accentLine = document.getElementById('p2AccentLine');
+      var sinceEl    = document.getElementById('p2Since');
       var enSub      = document.getElementById('p2EnSub');
 
       // 1. Tagline reveals via clip-path (CSS handles on .active)
@@ -119,14 +120,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 950 + i * 160);
       });
 
-      // 4. English subtitle drifts in after all chars
+      // 4. SINCE 2018 + English subtitle drift in after all chars
       var subDelay = 950 + chars.length * 160 + 80;
       setTimeout(function () {
-        if (enSub) enSub.classList.add('visible');
+        if (sinceEl) sinceEl.classList.add('visible');
+        setTimeout(function () {
+          if (enSub) enSub.classList.add('visible');
+        }, 200);
       }, subDelay);
 
       // 5. Hold then elegant whole-phase fade out
-      var exitDelay = subDelay + 1100;
+      var exitDelay = subDelay + 1200;
       setTimeout(function () {
         phase2.style.transition = 'opacity 0.8s ease';
         phase2.style.opacity    = '0';
@@ -141,6 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
             ch.style.transition = '';
           });
           if (accentLine) accentLine.classList.remove('expanded');
+          if (sinceEl) sinceEl.classList.remove('visible');
           if (enSub) enSub.classList.remove('visible');
           setTimeout(startPhase3, 60);
         }, 820);
