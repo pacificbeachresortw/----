@@ -180,9 +180,12 @@ em{font-style:italic}
 .filter-btn{background:none;border:1px solid transparent;color:var(--gray);font-family:var(--font-sans);font-size:.65rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;padding:8px 20px;cursor:pointer;transition:var(--tr)}
 .filter-btn:hover{color:var(--white);border-color:var(--gray-dark)}
 .filter-btn.active{color:var(--white);border-color:var(--white)}
-.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:280px;gap:12px}
+.portfolio-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:260px;gap:8px}
 .portfolio-item{position:relative;overflow:hidden;cursor:pointer}
-.portfolio-item.large{grid-column:span 2}
+.portfolio-item.large{grid-column:span 2;grid-row:span 2}
+.portfolio-item.wide{grid-column:span 2}
+.portfolio-item.tall{grid-row:span 2}
+.portfolio-item.w3{grid-column:span 3}
 .portfolio-img{width:100%;height:100%;transition:transform var(--tr-slow);display:flex;align-items:flex-start;padding:20px}
 .p-bg-1{background:linear-gradient(135deg,#111 0%,#2a2a2a 60%,#161616 100%)}
 .p-bg-2{background:linear-gradient(135deg,#1a1a1a 0%,#3a3a3a 60%,#111 100%)}
