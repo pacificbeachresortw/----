@@ -84,13 +84,13 @@ em{font-style:italic}
 }
 
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.55) 0%,rgba(0,0,0,.35) 40%,rgba(0,0,0,.7) 100%);z-index:1}
-.hero-content{position:relative;z-index:3;text-align:center;max-width:720px;padding:0 24px}
-.hero-subtitle{font-family:var(--font-sans);font-size:.68rem;font-weight:300;letter-spacing:.55em;color:var(--gray);text-transform:uppercase;margin-bottom:28px}
-.hero-title{font-family:var(--font-serif);font-size:clamp(3rem,8vw,6.5rem);font-weight:400;line-height:1.1;color:var(--white)}
-.hero-title span{display:inline-block}
-.hero-title em{font-style:italic;color:var(--gray-light)}
-.hero-divider{width:1px;height:48px;background:linear-gradient(to bottom,transparent,var(--gray-mid),transparent);margin:28px auto}
-.hero-desc{font-family:var(--font-light);font-size:1rem;color:var(--gray);letter-spacing:.15em;margin-bottom:40px}
+.hero-content{position:absolute;z-index:3;bottom:120px;left:clamp(32px,5vw,80px);text-align:left;max-width:860px;padding:0}
+.hero-subtitle{font-family:var(--font-sans);font-size:.65rem;font-weight:300;letter-spacing:.55em;color:rgba(255,255,255,.5);text-transform:uppercase;margin-bottom:20px}
+.hero-title{font-family:var(--font-serif);font-size:clamp(2.2rem,5.5vw,4.8rem);font-weight:400;line-height:1.15;color:var(--white);white-space:nowrap}
+.hero-title span{display:inline}
+.hero-title em{font-style:italic;color:var(--gray-light);margin-left:.12em}
+.hero-divider{width:48px;height:1px;background:linear-gradient(to right,var(--gray-mid),transparent);margin:24px 0}
+.hero-desc{font-family:var(--font-light);font-size:.95rem;color:rgba(255,255,255,.55);letter-spacing:.12em;margin-bottom:36px}
 .hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:10px;opacity:.5}
 .hero-scroll span{font-family:var(--font-sans);font-size:.55rem;letter-spacing:.35em;color:var(--gray);text-transform:uppercase}
 .scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--gray-mid),transparent);animation:scrollPulse 1.8s ease-in-out infinite}
