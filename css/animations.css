@@ -275,7 +275,6 @@
   background-position: center;
   filter: grayscale(100%) brightness(0.55) contrast(1.2);
   opacity: 0;
-  will-change: transform, opacity;
 }
 .intro-photo.visible {
   opacity: 1;

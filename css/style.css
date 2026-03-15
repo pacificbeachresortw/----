@@ -127,11 +127,11 @@ em{font-style:italic}
 .hero-bg-slide:nth-child(4){animation-delay:-24s;}
 
 @keyframes heroBgFade{
-  0%    {opacity:0;transform:scale(1.06)}
-  4%    {opacity:1}
-  21%   {opacity:1;transform:scale(1.0)}
-  25%   {opacity:0;transform:scale(1.0)}
-  100%  {opacity:0;transform:scale(1.06)}
+  0%    {opacity:0}
+  5%    {opacity:1}
+  45%   {opacity:1}
+  50%   {opacity:0}
+  100%  {opacity:0}
 }
 
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.55) 0%,rgba(0,0,0,.35) 40%,rgba(0,0,0,.7) 100%);z-index:1}

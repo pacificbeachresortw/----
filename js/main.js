@@ -3,6 +3,11 @@
 /* ── Lenis Smooth Scroll ── */
 var lenis = null;
 
+/* Shared rAF state for cursor */
+var _cursorRing = null, _cursorDot = null;
+var _mouseX = -100, _mouseY = -100;
+var _ringX = -100, _ringY = -100;
+
 function initLenis() {
   if (typeof Lenis === 'undefined') return;
   lenis = new Lenis({
@@ -14,13 +19,20 @@ function initLenis() {
     touchMultiplier: 1.5,
   });
 
-  function rafLoop(time) {
-    lenis.raf(time);
-    requestAnimationFrame(rafLoop);
+  /* Single master rAF: Lenis + cursor lerp combined */
+  function masterRaf(time) {
+    if (lenis) lenis.raf(time);
+    /* Cursor ring lerp */
+    if (_cursorRing) {
+      _ringX += (_mouseX - _ringX) * 0.1;
+      _ringY += (_mouseY - _ringY) * 0.1;
+      _cursorRing.style.left = _ringX + 'px';
+      _cursorRing.style.top  = _ringY + 'px';
+    }
+    requestAnimationFrame(masterRaf);
   }
-  requestAnimationFrame(rafLoop);
+  requestAnimationFrame(masterRaf);
 
-  /* Forward Lenis scroll events to native listeners */
   lenis.on('scroll', function (e) {
     window.dispatchEvent(new CustomEvent('lenis-scroll', { detail: e }));
   });
@@ -451,43 +463,28 @@ if (document.readyState === 'loading') {
   });
 })();
 
-/* ── Custom Cursor ── */
+/* ── Custom Cursor (uses shared masterRaf, no separate rAF loop) ── */
 (function () {
   var ring = document.getElementById('cursorRing');
   var dot  = document.getElementById('cursorDot');
   if (!ring || !dot) return;
 
-  var mouseX = -100, mouseY = -100;
-  var ringX  = -100, ringY  = -100;
-  var isTouch = false;
+  /* Share with masterRaf */
+  _cursorRing = ring;
+  _cursorDot  = dot;
 
-  /* Detect touch to hide cursor */
   window.addEventListener('touchstart', function () {
-    isTouch = true;
     ring.style.opacity = '0';
     dot.style.opacity  = '0';
   }, { once: true });
 
-  /* Track mouse position */
   document.addEventListener('mousemove', function (e) {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    /* Dot snaps to mouse immediately */
-    dot.style.left = mouseX + 'px';
-    dot.style.top  = mouseY + 'px';
+    _mouseX = e.clientX;
+    _mouseY = e.clientY;
+    dot.style.left = _mouseX + 'px';
+    dot.style.top  = _mouseY + 'px';
   });
 
-  /* Ring follows with smooth lag */
-  function rafCursor() {
-    ringX += (mouseX - ringX) * 0.1;
-    ringY += (mouseY - ringY) * 0.1;
-    ring.style.left = ringX + 'px';
-    ring.style.top  = ringY + 'px';
-    requestAnimationFrame(rafCursor);
-  }
-  rafCursor();
-
-  /* Hover state on interactive elements */
   var hoverEls = document.querySelectorAll(
     'a, button, .portfolio-item, .filter-btn, .social-btn, .nav-toggle, .intro-skip'
   );
@@ -502,17 +499,12 @@ if (document.readyState === 'loading') {
     });
   });
 
-  /* Click state */
   document.addEventListener('mousedown', function () { ring.classList.add('cursor-click'); });
   document.addEventListener('mouseup',   function () { ring.classList.remove('cursor-click'); });
-
-  /* Fade out when mouse leaves window */
   document.addEventListener('mouseleave', function () {
-    ring.style.opacity = '0';
-    dot.style.opacity  = '0';
+    ring.style.opacity = '0'; dot.style.opacity = '0';
   });
   document.addEventListener('mouseenter', function () {
-    ring.style.opacity = '1';
-    dot.style.opacity  = '1';
+    ring.style.opacity = '1'; dot.style.opacity = '1';
   });
 })();
