@@ -43,20 +43,23 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
 
-    // Photo entry animations — each index gets a different style
-    var photoAnimations = [
-      { from: 'translateX(-6%) scale(1.06)',  to: 'translateX(0) scale(1)',   dur: '0.35s' },
-      { from: 'translateX(6%) scale(1.06)',   to: 'translateX(0) scale(1)',   dur: '0.35s' },
-      { from: 'translateY(-5%) scale(1.05)',  to: 'translateY(0) scale(1)',   dur: '0.3s'  },
-      { from: 'translateY(5%) scale(1.05)',   to: 'translateY(0) scale(1)',   dur: '0.3s'  },
-      { from: 'scale(1.12)',                  to: 'scale(1)',                  dur: '0.4s'  },
-      { from: 'scale(0.92)',                  to: 'scale(1)',                  dur: '0.3s'  },
-      { from: 'translateX(-8%) scale(1.04)',  to: 'translateX(0) scale(1)',   dur: '0.28s' },
-      { from: 'translateX(8%) scale(1.04)',   to: 'translateX(0) scale(1)',   dur: '0.28s' },
-      { from: 'scale(1.1) translateY(-3%)',   to: 'scale(1) translateY(0)',   dur: '0.35s' },
-      { from: 'scale(1.08) translateX(3%)',   to: 'scale(1) translateX(0)',   dur: '0.32s' },
-      { from: 'translateY(4%) scale(1.05)',   to: 'translateY(0) scale(1)',   dur: '0.3s'  },
-      { from: 'scale(0.94) translateY(-4%)',  to: 'scale(1) translateY(0)',   dur: '0.35s' },
+    // Ken Burns classes for each photo
+    var kbClasses = ['kb-in','kb-right','kb-left','kb-up','kb-out','kb-in','kb-right','kb-left','kb-up','kb-in','kb-out','kb-right'];
+
+    // Per-photo timing: hold duration (ms) + whether to fire shutter flash before showing
+    var photoTimings = [
+      { hold: 340, flash: true  },
+      { hold: 270, flash: true  },
+      { hold: 310, flash: true  },
+      { hold: 240, flash: true  },
+      { hold: 270, flash: true  },
+      { hold: 360, flash: true  },
+      { hold: 250, flash: true  },
+      { hold: 290, flash: true  },
+      { hold: 330, flash: true  },
+      { hold: 260, flash: true  },
+      { hold: 400, flash: true  },
+      { hold: 480, flash: false },
     ];
 
     /* ── PHASE 1: Logo + Counter (no white flash) ── */
@@ -73,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       var timer = setInterval(function () {
         count++;
-        if (numEl) numEl.textContent = count;
+        if (numEl) numEl.textContent = String(count).padStart(3, '0');
         if (count >= 100) {
           clearInterval(timer);
           // Show skip button after phase 1 completes
@@ -93,94 +96,154 @@ document.addEventListener('DOMContentLoaded', function () {
       }, counterStep);
     }, 400);
 
-    /* ── PHASE 2: Tagline + Chars (faster) ── */
+    /* ── PHASE 2: Cinematic Title Card ── */
     function startPhase2() {
       showPhase(phase2);
-      // Chars slam in faster
+
+      var accentLine = document.getElementById('p2AccentLine');
+      var enSub      = document.getElementById('p2EnSub');
+
+      // 1. Tagline reveals via clip-path (CSS handles on .active)
+
+      // 2. Accent line draws out
+      setTimeout(function () {
+        if (accentLine) accentLine.classList.add('expanded');
+      }, 750);
+
+      // 3. Characters drift in slowly — elegant, not slamming
       chars.forEach(function (ch, i) {
         setTimeout(function () {
-          ch.style.opacity = '1';
-          ch.style.transform = 'translateY(0) scale(1)';
-          ch.style.transition = 'opacity 0.25s ease, transform 0.35s cubic-bezier(0.22,1,0.36,1)';
-        }, 550 + i * 110);
+          ch.style.transition = 'opacity 0.7s ease, transform 0.9s cubic-bezier(0.22,1,0.36,1)';
+          ch.style.opacity    = '1';
+          ch.style.transform  = 'translateY(0)';
+        }, 950 + i * 160);
       });
-      // Hold then exit faster
-      var dur = 550 + chars.length * 110 + 500;
+
+      // 4. English subtitle drifts in after all chars
+      var subDelay = 950 + chars.length * 160 + 80;
       setTimeout(function () {
-        chars.forEach(function (ch) {
-          ch.style.transition = 'opacity 0.2s ease, transform 0.28s cubic-bezier(0.76,0,0.24,1)';
-          ch.style.opacity = '0';
-          ch.style.transform = 'translateY(-24px) scale(1.06)';
-        });
+        if (enSub) enSub.classList.add('visible');
+      }, subDelay);
+
+      // 5. Hold then elegant whole-phase fade out
+      var exitDelay = subDelay + 1100;
+      setTimeout(function () {
+        phase2.style.transition = 'opacity 0.8s ease';
+        phase2.style.opacity    = '0';
         setTimeout(function () {
           hidePhase(phase2);
-          setTimeout(startPhase3, 100);
-        }, 280);
-      }, dur);
+          // Reset for potential re-use
+          phase2.style.opacity    = '';
+          phase2.style.transition = '';
+          chars.forEach(function (ch) {
+            ch.style.opacity    = '0';
+            ch.style.transform  = 'translateY(22px)';
+            ch.style.transition = '';
+          });
+          if (accentLine) accentLine.classList.remove('expanded');
+          if (enSub) enSub.classList.remove('visible');
+          setTimeout(startPhase3, 60);
+        }, 820);
+      }, exitDelay);
     }
 
-    /* ── PHASE 3: Fade-in / hold / fade-out per photo ── */
+    /* ── PHASE 3: Cinematic crossfade dissolve + Ken Burns + Text ── */
     function startPhase3() {
       showPhase(phase3);
 
-      var photoNumEl = document.createElement('div');
-      photoNumEl.className = 'intro-photo-num';
-      var photoContainer = document.getElementById('introPhotos');
-      if (photoContainer) photoContainer.appendChild(photoNumEl);
+      var progressEl = document.getElementById('photoProgress');
+      var numEl3     = document.getElementById('photoNum');
+      var line1El    = document.getElementById('p3Line1');
+      var line2El    = document.getElementById('p3Line2');
+      var total      = photos.length;
+      var idx        = 0;
+      var crossfade  = 500;
+      var hold       = 600;
 
-      var fadeInDur  = 300;   // ms fade in
-      var holdDur    = 280;   // ms hold at full opacity
-      var fadeOutDur = 220;   // ms fade out
-      var totalPerPhoto = fadeInDur + holdDur + fadeOutDur;
+      // Text groups: 4 groups × 3 photos = 12
+      var textGroups = [
+        ['廢墟不是可怕的地方', '而是人們遺忘的地方'],
+        ['廢墟曾經的輝煌故事', '現在只能用鏡頭記錄'],
+        ['再也無人光顧的景點', '沒有歡笑聲的樂園'],
+        ['人去樓空的餐廳', '灰塵沉積的走廊'],
+      ];
 
-      var idx = 0;
+      var currentGroup = -1;
+
+      function updateTextGroup(photoIdx) {
+        var groupIdx = Math.floor(photoIdx / 3);
+        if (groupIdx === currentGroup || groupIdx >= textGroups.length) return;
+        currentGroup = groupIdx;
+        var group = textGroups[groupIdx];
+
+        // Fade out previous lines
+        if (line1El) line1El.classList.remove('visible');
+        if (line2El) line2El.classList.remove('visible');
+
+        // Set new content and fade in with stagger
+        setTimeout(function () {
+          if (line1El) { line1El.textContent = group[0]; line1El.classList.add('visible'); }
+          setTimeout(function () {
+            if (line2El) { line2El.textContent = group[1]; line2El.classList.add('visible'); }
+          }, 220);
+        }, groupIdx === 0 ? 300 : 150);
+      }
+
+      // Assign z-index so later photos sit on top during crossfade
+      photos.forEach(function (p, i) { p.style.zIndex = i + 1; });
 
       function showNext() {
-        if (idx >= photos.length) {
-          setTimeout(startOutro, 400);
+        if (idx >= total) {
+          // Fade out text and last photo, then outro
+          if (line1El) line1El.classList.remove('visible');
+          if (line2El) line2El.classList.remove('visible');
+          var last = photos[total - 1];
+          if (last) {
+            last.style.transition = 'opacity 0.7s ease';
+            last.style.opacity    = '0';
+          }
+          setTimeout(startOutro, 720);
           return;
         }
 
         var photo = photos[idx];
-        var anim  = photoAnimations[idx % photoAnimations.length];
+        var kb    = kbClasses[idx % kbClasses.length];
 
-        // Reset
+        // Counter & progress
+        if (numEl3) {
+          numEl3.textContent =
+            String(idx + 1).padStart(2, '0') + '  /  ' + String(total).padStart(2, '0');
+        }
+        if (progressEl) {
+          progressEl.style.transition = 'width ' + ((crossfade + hold) / 1000) + 's linear';
+          progressEl.style.width      = ((idx + 1) / total * 100) + '%';
+        }
+
+        // Update text group at start of each new group
+        updateTextGroup(idx);
+
+        // Reset & crossfade in
         photo.style.transition = 'none';
         photo.style.opacity    = '0';
-        photo.style.transform  = anim.from;
+        photo.style.transform  = '';
+        photo.className        = 'intro-photo';
         photo.classList.add('visible');
+        photo.classList.add(kb);
 
-        // Fade IN + slide
         requestAnimationFrame(function () {
           requestAnimationFrame(function () {
-            photo.style.transition = 'opacity ' + (fadeInDur/1000) + 's ease, transform ' + anim.dur + ' cubic-bezier(0.22,1,0.36,1)';
+            photo.style.transition = 'opacity ' + (crossfade / 1000) + 's ease';
             photo.style.opacity    = '1';
-            photo.style.transform  = anim.to;
 
-            if (photoNumEl) {
-              photoNumEl.textContent = String(idx + 1).padStart(2,'0') + ' / ' + String(photos.length).padStart(2,'0');
-            }
+            setTimeout(function () {
+              idx++;
+              showNext();
+            }, crossfade + hold);
           });
         });
-
-        // Hold then FADE OUT
-        setTimeout(function () {
-          photo.style.transition = 'opacity ' + (fadeOutDur/1000) + 's ease';
-          photo.style.opacity    = '0';
-
-          // Next photo after fade out
-          setTimeout(function () {
-            photo.classList.remove('visible');
-            photo.style.opacity   = '';
-            photo.style.transform = '';
-            photo.style.transition= '';
-            idx++;
-            showNext();
-          }, fadeOutDur);
-        }, fadeInDur + holdDur);
       }
 
-      setTimeout(showNext, 80);
+      setTimeout(showNext, 120);
     }
 
     /* ── OUTRO: Fade black → reveal site with entrance animation ── */

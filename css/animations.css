@@ -1,7 +1,7 @@
 /* 汐奎攝影 — Animations, Form, Footer, Responsive */
 
 /* =============================================
-   INTRO LOADER — High-Impact Multi-Phase
+   INTRO LOADER — Cinematic Multi-Phase
    ============================================= */
 
 .intro-loader {
@@ -33,53 +33,58 @@
   width: auto;
   filter: brightness(0) invert(1);
   opacity: 0;
-  transform: scale(0.85);
-  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22,1,0.36,1);
+  transform: scale(0.88);
+  transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
 }
 .intro-phase.active .intro-logo-main {
   opacity: 1;
   transform: scale(1);
 }
 
-/* Scan line effect on logo */
-.intro-logo-main::after {
-  content: '';
-}
-
 .intro-counter-wrap {
-  margin-top: 44px;
+  margin-top: 52px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
   opacity: 0;
-  transition: opacity 0.4s ease 0.3s;
+  transition: opacity 0.5s ease 0.4s;
 }
 .intro-phase.active .intro-counter-wrap { opacity: 1; }
 
 .intro-counter-bar {
-  width: 240px;
+  width: 260px;
   height: 1px;
-  background: #111;
+  background: rgba(255,255,255,0.1);
   position: relative;
   overflow: hidden;
 }
-/* Glowing fill */
 .intro-counter-fill {
   position: absolute;
   top: 0; left: 0;
   height: 100%;
   width: 0%;
-  background: linear-gradient(to right, #222, #fff, #222);
-  box-shadow: 0 0 8px rgba(255,255,255,0.4);
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.9), rgba(255,255,255,0.5));
+  box-shadow: 0 0 12px rgba(255,255,255,0.6), 0 0 24px rgba(255,255,255,0.2);
+}
+
+/* Camera-style loading label above counter */
+.intro-counter-label {
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 0.38rem;
+  font-weight: 400;
+  letter-spacing: 0.55em;
+  color: rgba(255,255,255,0.25);
+  text-transform: uppercase;
+  margin-bottom: 2px;
 }
 
 .intro-counter-num {
   font-family: 'Montserrat', Arial, sans-serif;
-  font-size: clamp(3rem, 8vw, 5rem);
+  font-size: clamp(0.85rem, 2vw, 1.15rem);
   font-weight: 200;
-  letter-spacing: -0.02em;
-  color: #1a1a1a;
+  letter-spacing: 0.22em;
+  color: rgba(255,255,255,0.55);
   line-height: 1;
   transition: color 0.1s;
 }
@@ -89,11 +94,26 @@
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  opacity: 0.2;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.25;
   pointer-events: none;
-  animation: grain 0.6s steps(1) infinite;
+  animation: grain 0.5s steps(1) infinite;
 }
+
+/* Corner frame on phase 1 */
+.intro-phase#introPhase1::after {
+  content: '';
+  position: absolute;
+  inset: 32px;
+  border: 1px solid rgba(255,255,255,0.05);
+  pointer-events: none;
+  animation: cornerFade 2s ease 0.5s both;
+}
+@keyframes cornerFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 @keyframes grain {
   0%  { transform:translate(0,0) }
   20% { transform:translate(-2%,-3%) }
@@ -104,8 +124,6 @@
 }
 
 /* ── PHASE 2: Tagline + Brand Chars ── */
-
-/* Scan beam that sweeps across during phase 2 */
 .intro-phase#introPhase2::after {
   content: '';
   position: absolute;
@@ -116,7 +134,7 @@
   background: linear-gradient(to right,
     transparent 0%,
     rgba(255,255,255,0.03) 40%,
-    rgba(255,255,255,0.07) 50%,
+    rgba(255,255,255,0.08) 50%,
     rgba(255,255,255,0.03) 60%,
     transparent 100%
   );
@@ -130,7 +148,6 @@
   to   { left: 115%; }
 }
 
-/* Horizontal line that streaks through */
 .intro-phase#introPhase2::before {
   content: '';
   position: absolute;
@@ -141,7 +158,7 @@
   background: linear-gradient(to right,
     transparent,
     rgba(255,255,255,0.06) 30%,
-    rgba(255,255,255,0.15) 50%,
+    rgba(255,255,255,0.18) 50%,
     rgba(255,255,255,0.06) 70%,
     transparent
   );
@@ -155,22 +172,56 @@
   to   { opacity: 0; transform: translateX(20px); }
 }
 
+/* Tagline — small italic subtitle, clip-path reveal */
 .intro-tagline {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  font-size: clamp(0.7rem, 1.4vw, 0.95rem);
   font-weight: 300;
-  letter-spacing: 0.28em;
-  color: #3a3a3a;
+  letter-spacing: 0.45em;
+  color: rgba(255,255,255,0.35);
   font-style: italic;
-  margin: 0 0 44px;
+  margin: 0 0 0;
   clip-path: inset(0 100% 0 0);
-  transition: clip-path 0.7s cubic-bezier(0.4,0,0.2,1) 0.05s;
+  transition: clip-path 1s cubic-bezier(0.4,0,0.2,1) 0.2s;
   white-space: nowrap;
   position: relative;
   z-index: 1;
+  text-transform: uppercase;
 }
 .intro-phase.active .intro-tagline {
   clip-path: inset(0 0% 0 0);
+}
+
+/* P2 horizontal accent line */
+.p2-accent-line {
+  width: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.35), transparent);
+  margin: 28px 0 36px;
+  position: relative;
+  z-index: 1;
+  transition: width 0.9s cubic-bezier(0.4,0,0.2,1);
+}
+.p2-accent-line.expanded { width: 200px; }
+
+/* P2 English subtitle — small caps below brand name */
+.p2-en-subtitle {
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 0.42rem;
+  font-weight: 300;
+  letter-spacing: 0.62em;
+  color: rgba(255,255,255,0.22);
+  text-transform: uppercase;
+  margin-top: 28px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 1s ease, transform 1s cubic-bezier(0.22,1,0.36,1);
+  position: relative;
+  z-index: 1;
+}
+.p2-en-subtitle.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .intro-brand-chars {
@@ -179,37 +230,70 @@
   position: relative;
   z-index: 1;
 }
+
+/* Cinematic drift entrance — elegant, not slamming */
 .ibc {
   font-family: 'Montserrat', Arial, sans-serif;
-  font-size: clamp(3.5rem, 12vw, 9rem);
+  font-size: clamp(4rem, 13vw, 10rem);
   font-weight: 100;
   color: #fff;
   line-height: 1;
   opacity: 0;
-  transform: translateY(40px) scale(0.8);
+  transform: translateY(22px);
   display: inline-block;
-  letter-spacing: 0.04em;
-  text-shadow: 0 0 60px rgba(255,255,255,0.04);
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 100px rgba(255,255,255,0.05);
 }
 
-/* ── PHASE 3: Photo rapid flash (fullscreen single) ── */
+/* ── PHASE 3: Cinematic Photo Flash ── */
 .intro-photos {
   position: absolute;
   inset: 0;
 }
+
 .intro-photo {
   position: absolute;
   inset: 0;
   background-size: cover;
   background-position: center;
-  filter: grayscale(100%) brightness(0.6) contrast(1.15);
+  filter: grayscale(100%) brightness(0.55) contrast(1.2);
   opacity: 0;
-  transition: opacity 0.15s ease;
+  will-change: transform, opacity;
 }
 .intro-photo.visible {
   opacity: 1;
 }
-/* Scan line overlay on photos */
+
+/* Ken Burns animations */
+@keyframes kbZoomIn {
+  from { transform: scale(1.12); }
+  to   { transform: scale(1.0); }
+}
+@keyframes kbZoomOut {
+  from { transform: scale(1.0); }
+  to   { transform: scale(1.08); }
+}
+@keyframes kbPanLeft {
+  from { transform: scale(1.08) translateX(3%); }
+  to   { transform: scale(1.02) translateX(0); }
+}
+@keyframes kbPanRight {
+  from { transform: scale(1.08) translateX(-3%); }
+  to   { transform: scale(1.02) translateX(0); }
+}
+@keyframes kbPanUp {
+  from { transform: scale(1.08) translateY(3%); }
+  to   { transform: scale(1.02) translateY(0); }
+}
+
+/* Duration matches crossfade(500ms) + hold(600ms) + next crossfade(500ms) = 1.6s */
+.intro-photo.kb-in    { animation: kbZoomIn  1.8s cubic-bezier(0.22,1,0.36,1) forwards; }
+.intro-photo.kb-out   { animation: kbZoomOut 1.8s cubic-bezier(0.22,1,0.36,1) forwards; }
+.intro-photo.kb-left  { animation: kbPanLeft  1.8s cubic-bezier(0.22,1,0.36,1) forwards; }
+.intro-photo.kb-right { animation: kbPanRight 1.8s cubic-bezier(0.22,1,0.36,1) forwards; }
+.intro-photo.kb-up    { animation: kbPanUp    1.8s cubic-bezier(0.22,1,0.36,1) forwards; }
+
+/* Scanline overlay on photos */
 .intro-photos::after {
   content: '';
   position: absolute;
@@ -218,23 +302,140 @@
     to bottom,
     transparent 0px,
     transparent 3px,
-    rgba(0,0,0,0.12) 3px,
-    rgba(0,0,0,0.12) 4px
+    rgba(0,0,0,0.1) 3px,
+    rgba(0,0,0,0.1) 4px
   );
   pointer-events: none;
-  z-index: 1;
+  z-index: 5;
 }
-/* Photo counter overlay */
+
+/* Cinematic cut overlay — dark, not white */
+.intro-shutter-flash {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* Cinematic text overlay — fades in with each photo group */
+.intro-p3-text {
+  position: absolute;
+  bottom: 72px;
+  left: 52px;
+  z-index: 16;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.p3-line {
+  display: block;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.1rem, 2.6vw, 1.75rem);
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.82);
+  text-shadow: 0 2px 24px rgba(0,0,0,0.7), 0 0 60px rgba(0,0,0,0.5);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
+  white-space: nowrap;
+}
+
+.p3-line.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Photo counter bottom-right */
 .intro-photo-num {
   position: absolute;
-  bottom: 24px;
-  right: 28px;
+  bottom: 28px;
+  right: 36px;
   font-family: 'Montserrat', Arial, sans-serif;
-  font-size: 0.55rem;
-  letter-spacing: 0.3em;
-  color: rgba(255,255,255,0.25);
-  z-index: 2;
+  font-size: 0.5rem;
+  letter-spacing: 0.4em;
+  color: rgba(255,255,255,0.22);
+  z-index: 15;
+  pointer-events: none;
 }
+
+/* Photo progress bar bottom */
+.intro-photo-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: rgba(255,255,255,0.35);
+  z-index: 15;
+  pointer-events: none;
+  box-shadow: 0 0 6px rgba(255,255,255,0.2);
+  transition: width 0.1s linear;
+}
+
+/* Vertical brand label — right edge */
+.intro-p3-brand {
+  position: absolute;
+  top: 50%;
+  right: 28px;
+  transform: translateY(-50%) rotate(90deg);
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 0.38rem;
+  letter-spacing: 0.55em;
+  color: rgba(255,255,255,0.14);
+  text-transform: uppercase;
+  z-index: 15;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Top-left exposure label */
+.intro-p3-label {
+  position: absolute;
+  top: 28px;
+  left: 36px;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 0.4rem;
+  letter-spacing: 0.4em;
+  color: rgba(255,255,255,0.16);
+  text-transform: uppercase;
+  z-index: 15;
+  pointer-events: none;
+}
+
+/* Corner brackets */
+.intro-p3-corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  z-index: 15;
+  pointer-events: none;
+  opacity: 0.16;
+}
+.intro-p3-corner::before,
+.intro-p3-corner::after {
+  content: '';
+  position: absolute;
+  background: #fff;
+}
+.intro-p3-corner.tl { top: 18px; left: 18px; }
+.intro-p3-corner.tr { top: 18px; right: 18px; }
+.intro-p3-corner.bl { bottom: 18px; left: 18px; }
+.intro-p3-corner.br { bottom: 18px; right: 18px; }
+.intro-p3-corner.tl::before,
+.intro-p3-corner.tl::after { top: 0; left: 0; }
+.intro-p3-corner.tr::before,
+.intro-p3-corner.tr::after { top: 0; right: 0; }
+.intro-p3-corner.bl::before,
+.intro-p3-corner.bl::after { bottom: 0; left: 0; }
+.intro-p3-corner.br::before,
+.intro-p3-corner.br::after { bottom: 0; right: 0; }
+.intro-p3-corner::before { width: 100%; height: 1px; }
+.intro-p3-corner::after  { height: 100%; width: 1px; }
 
 /* ── Skip Button ── */
 .intro-skip {
@@ -244,14 +445,14 @@
   transform: translateX(-50%);
   z-index: 10000;
   background: none;
-  border: 1px solid #222;
-  color: #333;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.28);
   font-family: 'Montserrat', Arial, sans-serif;
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   font-weight: 400;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.35em;
   text-transform: uppercase;
-  padding: 10px 24px;
+  padding: 10px 28px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -265,8 +466,8 @@
   pointer-events: all;
 }
 .intro-skip:hover {
-  border-color: #555;
-  color: #666;
+  border-color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.55);
 }
 .intro-skip i { font-size: 0.55rem; }
 
@@ -282,39 +483,57 @@
 .intro-outro.fade-in { opacity: 1; pointer-events: all; }
 
 /* =============================================
-   SITE ENTER — Homepage reveal animation
-   Triggered by body.site-enter after intro
+   SITE ENTER — Cinematic hero reveal
    ============================================= */
 
-/* Hero content enters from below */
 body:not(.site-enter) .hero-content,
 body:not(.site-enter) .hero-scroll,
 body:not(.site-enter) .navbar {
   opacity: 0;
 }
 
+/* Subtitle slides in from left with expanding letter-spacing */
 body.site-enter .hero-subtitle {
-  animation: siteEnterUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.1s both;
+  animation: siteEnterLeft 1s cubic-bezier(0.22,1,0.36,1) 0.15s both;
 }
+/* Title rises with slight skew — cinematic */
 body.site-enter .hero-title {
-  animation: siteEnterUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s both;
+  animation: siteEnterTitle 1.1s cubic-bezier(0.22,1,0.36,1) 0.3s both;
 }
+/* Divider scales in from left */
 body.site-enter .hero-divider {
-  animation: siteEnterFade 0.7s ease 0.5s both;
+  animation: siteEnterScaleX 0.8s cubic-bezier(0.22,1,0.36,1) 0.55s both;
+  transform-origin: left center;
 }
+/* Desc fades up */
 body.site-enter .hero-desc {
-  animation: siteEnterUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.55s both;
+  animation: siteEnterUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.65s both;
 }
+/* Button rises last */
 body.site-enter .btn-primary {
-  animation: siteEnterUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.7s both;
+  animation: siteEnterUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.82s both;
 }
+/* Scroll indicator fades in */
 body.site-enter .hero-scroll {
-  animation: siteEnterFade 1s ease 1s both;
+  animation: siteEnterFade 1s ease 1.1s both;
 }
+/* Navbar slides down */
 body.site-enter .navbar {
-  animation: siteEnterFade 0.6s ease 0.1s both;
+  animation: siteEnterDown 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both;
 }
 
+@keyframes siteEnterLeft {
+  from { opacity: 0; transform: translateX(-28px); letter-spacing: 0.55em; }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes siteEnterTitle {
+  from { opacity: 0; transform: translateY(52px) skewY(3deg); }
+  to   { opacity: 1; transform: translateY(0) skewY(0); }
+}
+@keyframes siteEnterScaleX {
+  from { opacity: 0; transform: scaleX(0); }
+  to   { opacity: 1; transform: scaleX(1); }
+}
 @keyframes siteEnterUp {
   from { opacity: 0; transform: translateY(32px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -323,8 +542,51 @@ body.site-enter .navbar {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
+@keyframes siteEnterDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-/* Form (continued) */
+/* =============================================
+   PORTFOLIO — Cinematic group reveal
+   ============================================= */
+
+/* All items: start clipped from bottom + slightly dark */
+.portfolio-item {
+  opacity: 0;
+  transform: translateY(28px) scale(0.97);
+  clip-path: inset(0 0 100% 0);
+  transition:
+    opacity 0.7s cubic-bezier(0.22,1,0.36,1),
+    transform 0.75s cubic-bezier(0.22,1,0.36,1),
+    clip-path 0.75s cubic-bezier(0.22,1,0.36,1);
+}
+
+/* Group 1: items 1 & 2 appear together */
+.portfolio-grid.visible .portfolio-item:nth-child(1),
+.portfolio-grid.visible .portfolio-item:nth-child(2) {
+  transition-delay: 0s;
+}
+/* Group 2: items 3 & 4 appear together, 140ms later */
+.portfolio-grid.visible .portfolio-item:nth-child(3),
+.portfolio-grid.visible .portfolio-item:nth-child(4) {
+  transition-delay: 0.14s;
+}
+/* Group 3: items 5 & 6 appear together, 280ms later */
+.portfolio-grid.visible .portfolio-item:nth-child(5),
+.portfolio-grid.visible .portfolio-item:nth-child(6) {
+  transition-delay: 0.28s;
+}
+.portfolio-grid.visible .portfolio-item {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  clip-path: inset(0 0 0% 0);
+}
+
+/* =============================================
+   FORM, FOOTER, RESPONSIVE
+   ============================================= */
+
 .form-label{position:absolute;top:16px;left:0;font-family:var(--font-sans);font-size:.75rem;color:var(--gray);letter-spacing:.1em;transition:all 0.3s ease;pointer-events:none}
 .form-input:focus~.form-label,
 .form-input:not(:placeholder-shown)~.form-label{top:-8px;font-size:.6rem;letter-spacing:.2em;color:var(--gray-light)}
@@ -332,7 +594,6 @@ body.site-enter .navbar {
 .form-select{-webkit-appearance:none;appearance:none;cursor:pointer;color:var(--gray)}
 .form-select option{background:var(--dark-1);color:var(--white)}
 
-/* Footer */
 .footer{padding:60px 40px;background:var(--black);border-top:1px solid var(--dark-3);text-align:center}
 .footer-inner{max-width:600px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:20px}
 .footer-logo-img{height:50px;width:auto;filter:brightness(0) invert(1);opacity:.6}
@@ -387,8 +648,8 @@ body.site-enter .navbar {
   .about,.portfolio,.services,.contact{padding:80px 0}
   .quote-banner{padding:70px 24px}
   .footer{padding:50px 24px}
-  .intro-photos{grid-template-columns:1fr}
-  .intro-counter-bar{width:160px}
+  .intro-counter-bar{width:180px}
+  .intro-p3-brand, .intro-p3-label { display: none; }
 }
 @media(max-width:480px){
   .portfolio-grid{grid-template-columns:1fr;grid-auto-rows:260px}
