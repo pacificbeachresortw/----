@@ -415,6 +415,19 @@ if (document.readyState === 'loading') {
   initLenis();
 }
 
+/* ── Hero Background Slideshow (JS-controlled, one active at a time) ── */
+(function () {
+  var slides = document.querySelectorAll('.hero-bg-slide');
+  if (!slides.length) return;
+  var cur = 0;
+  slides[0].classList.add('active');
+  setInterval(function () {
+    slides[cur].classList.remove('active');
+    cur = (cur + 1) % slides.length;
+    slides[cur].classList.add('active');
+  }, 8000);
+})();
+
 /* ── Portfolio Hover Slideshow ── */
 (function () {
   document.querySelectorAll('.portfolio-item[data-slides]').forEach(function (item) {
