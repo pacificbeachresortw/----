@@ -1,4 +1,4 @@
-/* 汐奎攝影 XIKUI PHOTOGRAPHY — Gallery Filter + Page Transition JS */
+/* 汐日攝影 XURIH PHOTOGRAPHY — Gallery Filter + Page Transition JS */
 
 document.addEventListener('DOMContentLoaded', function () {
 

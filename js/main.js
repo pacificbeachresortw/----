@@ -1,4 +1,4 @@
-/* 汐奎攝影 XIKUI PHOTOGRAPHY — Main JS */
+/* 汐日攝影 XURIH PHOTOGRAPHY — Main JS */
 
 /* ── Lenis Smooth Scroll ── */
 var lenis = null;

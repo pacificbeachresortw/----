@@ -1,4 +1,4 @@
-/* 汐奎攝影 — Work Detail Page JS */
+/* 汐日攝影 — Work Detail Page JS */
 
 document.addEventListener('DOMContentLoaded', function () {
 
